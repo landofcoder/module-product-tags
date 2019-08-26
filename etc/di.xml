@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Lof\ProductTags\Api\TagsManagementInterface" type="Lof\ProductTags\Model\TagsManagement"/>
+	<preference for="Lof\ProductTags\Api\ProductsManagementInterface" type="Lof\ProductTags\Model\ProductsManagement"/>
+	<preference for="Lof\ProductTags\Api\TagRepositoryInterface" type="Lof\ProductTags\Model\TagRepository"/>
+	<preference for="Lof\ProductTags\Api\Data\TagInterface" type="Lof\ProductTags\Model\Data\Tag"/>
+	<preference for="Lof\ProductTags\Api\Data\TagSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Lof\ProductTags\Model\ResourceModel\Tag\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">lof_producttags_tag</argument>
+			<argument name="resourceModel" xsi:type="string">Lof\ProductTags\Model\ResourceModel\Tag\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="lof_producttags_tag_listing_data_source" xsi:type="string">Lof\ProductTags\Model\ResourceModel\Tag\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

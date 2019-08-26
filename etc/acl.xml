@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Lof_ProductTags::lofproducttags" sortOrder="10" title="lofproducttags">
+					<resource id="Lof_ProductTags::tags_index" sortOrder="10" title="tags index"/>
+				</resource>
+				<resource id="Lof_ProductTags::Tag" sortOrder="10" title="Tag">
+					<resource id="Lof_ProductTags::Tag_save" sortOrder="10" title="Save Tag"/>
+					<resource id="Lof_ProductTags::Tag_delete" sortOrder="20" title="Delete Tag"/>
+					<resource id="Lof_ProductTags::Tag_update" sortOrder="30" title="Update Tag"/>
+					<resource id="Lof_ProductTags::Tag_view" sortOrder="40" title="View Tag"/>
+				</resource>
+				<resource id="Magento_Backend::stores">
+					<resource id="Magento_Backend::stores_settings">
+						<resource id="Magento_Config::config">
+							<resource id="Lof_ProductTags::config_lof_producttags" title="lofproductags"/>
+						</resource>
+					</resource>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>
