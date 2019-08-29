@@ -38,10 +38,11 @@ class InstallSchema implements InstallSchemaInterface
         ModuleContextInterface $context
     ) {
         $installer = $setup;
-		$installer->startSetup();
-		if (!$installer->tableExists('lof_producttags_tags')) {
+        $installer->startSetup();
+        //Create lof_producttags_tag table
+		if (!$installer->tableExists('lof_producttags_tag')) {
 			$table = $installer->getConnection()->newTable(
-				$installer->getTable('lof_producttags_tags')
+				$installer->getTable('lof_producttags_tag')
 			)
                 ->addColumn(
                     'tag_id',
@@ -77,27 +78,56 @@ class InstallSchema implements InstallSchemaInterface
                     'Identifier'
                 )
                 ->addColumn(
-                    'created_at',
-                    \Magento\Framework\DB\Ddl\Table::TYPE_DATETIME,
+                    'customer_id',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
-                    ['nullable' => false],
+                    ['unsigned' => true, 'nullable' => false, 'default' => '0'],
+                    'Customer Id'
+                )
+                ->addColumn(
+                    'tag_description',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                    '64k',
+                    ['nullable' => false, 'default' => ''],
+                    'Tag Description'
+                )
+                ->addColumn(
+                    'number_products',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    null,
+                    ['nullable' => false, 'default' => '0'],
+                    'Number of products for the tag'
+                )
+                ->addColumn(
+                    'created_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
                     'Created At'
                 )
-                ->setComment('News Table')
+                ->addColumn(
+                    'modified_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Modified At'
+                )
+                ->setComment('Product Tags Table')
                 ->setOption('type', 'InnoDB')
                 ->setOption('charset', 'utf8');
             $installer->getConnection()->createTable($table);
             $installer->getConnection()->addIndex(
-				$installer->getTable('lof_producttags_tags'),
+				$installer->getTable('lof_producttags_tag'),
 				$setup->getIdxName(
-					$installer->getTable('lof_producttags_tags'),
-					['tag_title','identifier'],
+					$installer->getTable('lof_producttags_tag'),
+					['tag_title','identifier','tag_description'],
 					\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
 				),
-				['tag_title','identifier'],
+				['tag_title','identifier','tag_description'],
 				\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
 			);
         }
+        //Create lof_producttags_product table
         if (!$installer->tableExists('lof_producttags_product')) {
 			$table = $installer->getConnection()->newTable(
 				$installer->getTable('lof_producttags_product')
@@ -133,21 +163,12 @@ class InstallSchema implements InstallSchemaInterface
                     ['nullable' => false, 'default' => '0'],
                     'Position'
                 )
-                ->setComment('News Table')
+                ->setComment('products tags Table')
                 ->setOption('type', 'InnoDB')
                 ->setOption('charset', 'utf8');
             $installer->getConnection()->createTable($table);
-            $installer->getConnection()->addIndex(
-				$installer->getTable('lof_producttags_product'),
-				$setup->getIdxName(
-					$installer->getTable('lof_producttags_product'),
-					[],
-					\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-				),
-				[],
-				\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-			);
         }
+        //Create lof_producttags_store table
         if (!$installer->tableExists('lof_producttags_store')) {
 			$table = $installer->getConnection()->newTable(
 				$installer->getTable('lof_producttags_store')
@@ -176,20 +197,10 @@ class InstallSchema implements InstallSchemaInterface
                     ],
                     'Store ID'
                 )
-                ->setComment('News Table')
+                ->setComment('Product Tags Store Table')
                 ->setOption('type', 'InnoDB')
                 ->setOption('charset', 'utf8');
             $installer->getConnection()->createTable($table);
-            $installer->getConnection()->addIndex(
-				$installer->getTable('lof_producttags_store'),
-				$setup->getIdxName(
-					$installer->getTable('lof_producttags_store'),
-					[],
-					\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-				),
-				[],
-				\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-			);
 		}
         $installer->endSetup();     
     }
