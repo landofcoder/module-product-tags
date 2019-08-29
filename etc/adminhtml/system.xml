@@ -10,11 +10,31 @@
 			<resource>Lof_ProductTags::config_lof_producttags</resource>
 			<group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
 				<label>general</label>
-				<field id="enabled" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label" type="select">
-					<label>enabled</label>
-					<comment/>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-				</field>
+				<field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="route" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Route</label>
+                    <comment>This text will change your url.</comment>
+                    <depends>
+                        <field id = "enable">1</field>
+                    </depends>
+                </field>
+                <field id="enable_tag_block" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable tag block</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id = "enable">1</field>
+                    </depends>
+                </field>
+                <field id="number_tag" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number tag display</label>
+                    <comment>The number of tags can be displayed on product detail page.</comment>
+                    <depends>
+                        <field id = "enable">1</field>
+                    </depends>
+                </field>
 			</group>
 		</section>
 	</system>
