@@ -67,7 +67,6 @@
                     </depends>
                 </field>
 			</group>
-            <!-- <resource>Lof_ProductTags::lof_producttags</resource> -->
 		</section>
 	</system>
 </config>
