@@ -36,7 +36,7 @@ class Data extends AbstractHelper
      */
     
     protected $scopeConfig;
-    const XML_PATH_HELLOWORLD = 'lofproductags/';
+    const XML_PATH_TAG = 'lofproductags/';
     public function __construct(Context $context,ScopeConfigInterface $scopeConfig)
     {
         parent::__construct($context);
@@ -54,6 +54,6 @@ class Data extends AbstractHelper
     }
 	public function getGeneralConfig($code, $storeId = null)
 	{
-		return $this->getConfigValue(self::XML_PATH_HELLOWORLD .'general/'. $code, $storeId);
+		return $this->getConfigValue(self::XML_PATH_TAG .'general/'. $code, $storeId);
 	}
 }

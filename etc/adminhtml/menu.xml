@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="Lof::top_level" module="Lof_ProductTags" resource="Magento_Backend::content" sortOrder="9999" title="Lof"/>
-		<add action="lofproducttags/tags/index" id="Lof_ProductTags::tags_index" module="Lof_ProductTags" parent="Lof::top_level" resource="Lof_ProductTags::tags_index" sortOrder="9999" title="tags index"/>
-		<add action="lof_producttags/tag/index" id="Lof_ProductTags::lof_producttags_tag" module="Lof_ProductTags" parent="Lof::top_level" resource="Magento_Backend::content" sortOrder="9999" title="Tag"/>
+		<add id="Lof_ProductTags::producttags" module="Lof_ProductTags" parent="Magento_Catalog::inventory" resource="Lof_ProductTags::lofproducttags" action="lofproducttags/tag/index" sortOrder="9999" title="Product Tags"/>
 	</menu>
 </config>
