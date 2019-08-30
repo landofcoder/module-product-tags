@@ -23,6 +23,9 @@
 
 namespace Lof\ProductTags\Helper;
 
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Helper\AbstractHelper;
 
 class Data extends AbstractHelper
@@ -31,17 +34,26 @@ class Data extends AbstractHelper
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
-    public function __construct(
-        \Magento\Framework\App\Helper\Context $context
-    ) {
+    
+    protected $scopeConfig;
+    const XML_PATH_TAG = 'lofproductags/';
+    public function __construct(Context $context,ScopeConfigInterface $scopeConfig)
+    {
         parent::__construct($context);
+        $this->scopeConfig=$scopeConfig;
     }
 
     /**
      * @return bool
      */
-    public function isEnabled()
-    {
-        return true;
+    public function getConfigValue($field, $storeId = null)
+	{
+		return $this->scopeConfig->getValue(
+			$field, ScopeInterface::SCOPE_STORE, $storeId
+		);
     }
+	public function getGeneralConfig($code, $storeId = null)
+	{
+		return $this->getConfigValue(self::XML_PATH_TAG .'general/'. $code, $storeId);
+	}
 }
