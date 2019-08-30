@@ -18,7 +18,7 @@
                     <label>Route</label>
                     <comment>This text will change your url.</comment>
                     <depends>
-                        <field id ="enabled">1</field>
+                        <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="enable_tag_on_product" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -26,21 +26,21 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>show/hide product tags on product detail page.</comment>
                     <depends>
-                        <field id ="enabled">1</field>
+                        <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="product_tag_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product Tags Block Title</label>
                     <depends>
-                        <field id ="enabled">1</field>
-                        <field id ="enable_tag_on_product">1</field>
+                        <field id="enabled">1</field>
+                        <field id="enable_tag_on_product">1</field>
                     </depends>
                 </field>
                 <field id="number_tags" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Limit tags to show</label>
                     <depends>
-                        <field id ="enabled">1</field>
-                        <field id ="enable_tag_on_product">1</field>
+                        <field id="enabled">1</field>
+                        <field id="enable_tag_on_product">1</field>
                     </depends>
                 </field>
 
@@ -49,21 +49,21 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>show/hide product tags on sidebar position.</comment>
                     <depends>
-                        <field id ="enabled">1</field>
+                        <field id="enabled">1</field>
                     </depends>
                 </field>
                 <field id="tag_sidebar_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sidebar Tags Block Title</label>
                     <depends>
-                        <field id ="enabled">1</field>
-                        <field id ="enable_tag_sidebar">1</field>
+                        <field id="enabled">1</field>
+                        <field id="enable_tag_sidebar">1</field>
                     </depends>
                 </field>
                 <field id="number_tags_sidebar" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Limit tags to show on sidebar</label>
                     <depends>
-                        <field id ="enabled">1</field>
-                        <field id ="enable_tag_sidebar">1</field>
+                        <field id="enabled">1</field>
+                        <field id="enable_tag_sidebar">1</field>
                     </depends>
                 </field>
 			</group>
