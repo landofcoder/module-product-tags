@@ -20,14 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 namespace Lof\ProductTags\Controller\Adminhtml\Tags;
-
 class Index extends \Magento\Backend\App\Action
 {
-
     protected $resultPageFactory;
-
     /**
      * Constructor
      *
@@ -41,7 +37,6 @@ class Index extends \Magento\Backend\App\Action
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
-
     /**
      * Execute view action
      *

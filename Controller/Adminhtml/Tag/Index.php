@@ -26,7 +26,7 @@ namespace Lof\ProductTags\Controller\Adminhtml\Tag;
 class Index extends \Magento\Backend\App\Action
 {
 
-    protected $resultPageFactory;
+    protected $resultPageFactory = false;
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
-            $resultPage->getConfig()->getTitle()->prepend(__("Tag"));
+            $resultPage->getConfig()->getTitle()->prepend(__("Tags"));
             return $resultPage;
     }
 }

@@ -4,5 +4,8 @@
 		<route frontName="lofproducttags" id="lofproducttags">
 			<module before="Magento_Backend" name="Lof_ProductTags"/>
 		</route>
+		<route frontName="lof_producttags" id="lof_producttags">
+			<module before="Magento_Backend" name="Lof_ProductTags"/>
+		</route>
 	</router>
 </config>
