@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
 	<router id="admin">
-		<route frontName="lofproducttags" id="lofproducttags">
-			<module before="Magento_Backend" name="Lof_ProductTags"/>
-		</route>
 		<route frontName="lof_producttags" id="lof_producttags">
 			<module before="Magento_Backend" name="Lof_ProductTags"/>
 		</route>
