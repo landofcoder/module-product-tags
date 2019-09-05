@@ -27,7 +27,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                     'buttonAdapter' => [
                         'actions' => [
                             [
-                                'targetName' => 'cms_block_form.cms_block_form',
+                                'targetName' => 'lof_producttags_tag_form.lof_producttags_tag_form',
                                 'actionName' => 'save',
                                 'params' => [
                                     true,
@@ -61,7 +61,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => 'cms_block_form.cms_block_form',
+                                    'targetName' => 'lof_producttags_tag_form.lof_producttags_tag_form',
                                     'actionName' => 'save',
                                     'params' => [
                                         true,
@@ -83,7 +83,7 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
                         'buttonAdapter' => [
                             'actions' => [
                                 [
-                                    'targetName' => 'producttags_tag_form.producttags_tag_form',
+                                    'targetName' => 'lof_producttags_tag_form.lof_producttags_tag_form',
                                     'actionName' => 'save',
                                     'params' => [
                                         true,

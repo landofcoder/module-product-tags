@@ -6,47 +6,32 @@
 namespace Lof\ProductTags\Block\Adminhtml\Tags\Edit;
 
 use Magento\Backend\Block\Widget\Context;
-use Magento\Cms\Api\BlockRepositoryInterface;
+use Lof\ProductTags\Api\TagRepositoryInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Lof\ProductTags\Model\TagFactory;
 
 /**
  * Class GenericButton
  */
 class GenericButton
 {
-    /**
-     * @var Context
-     */
     protected $context;
-
-    /**
-     * @var BlockRepositoryInterface
-     */
-    protected $blockRepository;
-
-    /**
-     * @param Context $context
-     * @param BlockRepositoryInterface $blockRepository
-     */
+    protected $tagRepository;
+    protected $TagFactory;
     public function __construct(
         Context $context,
-        BlockRepositoryInterface $blockRepository
+        TagFactory $TagFactory,
+        TagRepositoryInterface $tagRepository
     ) {
         $this->context = $context;
-        $this->blockRepository = $blockRepository;
+        $this->TagFactory = $TagFactory
+            ?: \Magento\Framework\App\ObjectManager::getInstance()->get(TagFactory::class);
+        $this->tagRepository = $tagRepository;
     }
-
-    /**
-     * Return CMS block ID
-     *
-     * @return int|null
-     */
-    public function getBlockId()
+    public function getTagId()
     {
         try {
-            return $this->blockRepository->getById(
-                $this->context->getRequest()->getParam('tag_id')
-            )->getId();
+            return $this->tagRepository->getById($this->context->getRequest()->getParam('tag_name'))->getId();
         } catch (NoSuchEntityException $e) {
         }
         return null;
