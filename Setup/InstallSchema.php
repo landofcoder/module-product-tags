@@ -178,8 +178,10 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
+                        'identity' => false,
                         'unsigned' => true,
-                        'nullable' => false
+                        'nullable' => false,
+                        'foreign' => true
                     ],
                     'Tag ID'
                 )
@@ -188,8 +190,10 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
+                        'identity' => true,
                         'unsigned' => true,
-                        'nullable' => false
+                        'nullable' => false,
+                        'primary' => true
                     ],
                     'Store ID'
                 )
