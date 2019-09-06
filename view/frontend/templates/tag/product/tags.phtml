@@ -1,0 +1,27 @@
+<?php
+/**
+ * @var $block \Lof\ProductTags\Block\Tag\Product\ListProduct
+ */
+?>
+<?php
+$tags = $this->getTagCollection();
+$title = $this->getTagHelper()->getGeneralConfig("product_tag_title");
+if($tags && $tags->getSize()){
+	?>
+	<div class="block block-tags block-product-tags">
+		<div class="block-title"><h2><?php echo $title; ?></h2></div>
+		<div class="block-content">
+			<ul class="list-tags">
+				<?php foreach($tags as $tag): ?>
+				<li><a href="<?php echo $tag->getIdentifier(); ?>">
+				<?php 
+					echo $tag->getTagTitle(); 
+				?>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+	<?php
+}
+?>
