@@ -61,8 +61,9 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
                     return $resultRedirect->setPath('*/*/');
                 }
             }
+
             $model->setData($data);
-            try {
+            try{
                 $model->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the tag.'));
                 $this->dataPersistor->clear('lof_productags_tag');
