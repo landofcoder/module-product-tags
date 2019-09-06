@@ -25,6 +25,9 @@ namespace Lof\ProductTags\Model\ResourceModel\Tag;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $_idFieldName = 'tag_id';
+	protected $_eventPrefix = 'lof_producttags_tag_collection';
+	protected $_eventObject = 'tag_collection';
 
     /**
      * Define resource model

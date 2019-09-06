@@ -26,6 +26,7 @@ namespace Lof\ProductTags\Model\ResourceModel;
 class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
 
+    protected $_tagProductTable;
     /**
      * Define resource model
      *
@@ -34,5 +35,36 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     protected function _construct()
     {
         $this->_init('lof_producttags_tag', 'tag_id');
+    }
+     /**
+     * Category product table name getter
+     *
+     * @return string
+     */
+    public function getTagProductTable()
+    {
+        if (!$this->_tagProductTable) {
+            $this->_tagProductTable = $this->getTable('lof_producttags_product');
+        }
+        return $this->_tagProductTable;
+    }
+    /**
+     * Get positions of associated to category products
+     *
+     * @param \Lof\ProductTags\Model\Tag $tag
+     * @return array
+     */
+    public function getProductsPosition($tag)
+    {
+        $select = $this->getConnection()->select()->from(
+            $this->getTagProductTable(),
+            ['product_id', 'position']
+        )->where(
+            "{$this->getTable('lof_producttags_product')}.tag_id = ?",
+            $tag->getId()
+        );
+        $bind = ['tag_id' => (int)$tag->getId()];
+
+        return $this->getConnection()->fetchPairs($select, $bind);
     }
 }

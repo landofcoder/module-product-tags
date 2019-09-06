@@ -3,14 +3,11 @@
 	<acl>
 		<resources>
 			<resource id="Magento_Backend::admin">
-				<resource id="Lof_ProductTags::lofproducttags" sortOrder="10" title="lofproducttags">
-					<resource id="Lof_ProductTags::tags_index" sortOrder="10" title="tags index"/>
-				</resource>
 				<resource id="Lof_ProductTags::Tag" sortOrder="10" title="Tag">
 					<resource id="Lof_ProductTags::Tag_save" sortOrder="10" title="Save Tag"/>
 					<resource id="Lof_ProductTags::Tag_delete" sortOrder="20" title="Delete Tag"/>
-					<resource id="Lof_ProductTags::Tag_update" sortOrder="30" title="Update Tag"/>
-					<resource id="Lof_ProductTags::Tag_view" sortOrder="40" title="View Tag"/>
+					<resource id="Lof_ProductTags::Tag_add" sortOrder="30" title="Add New Tag"/>
+					<resource id="Lof_ProductTags::Tag_edit" sortOrder="40" title="Edit Tag"/>
 				</resource>
 				<resource id="Magento_Backend::stores">
 					<resource id="Magento_Backend::stores_settings">

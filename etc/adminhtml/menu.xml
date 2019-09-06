@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
 	<menu>
-		<add id="Lof_ProductTags::producttags" module="Lof_ProductTags" parent="Magento_Catalog::inventory" resource="Lof_ProductTags::lofproducttags" action="lofproducttags/tag/index" sortOrder="9999" title="Product Tags"/>
+		<add id="Lof_ProductTags::producttags" module="Lof_ProductTags" parent="Magento_Catalog::inventory" resource="Lof_ProductTags::Tag" action="lof_producttags/tag/index" sortOrder="9999" title="Product Tags"/>
 	</menu>
 </config>

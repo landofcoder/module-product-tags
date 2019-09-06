@@ -4,6 +4,14 @@
 		<item name="js_config" xsi:type="array">
 			<item name="provider" xsi:type="string">lof_producttags_tag_listing.lof_producttags_tag_listing_data_source</item>
 		</item>
+		<item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Tag</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">lof_producttags/tag/newaction</item>
+            </item>
+        </item>
 	</argument>
 	<settings>
 		<spinner>lof_producttags_tag_columns</spinner>
@@ -31,7 +39,35 @@
 		<columnsControls name="columns_controls"/>
 		<filters name="listing_filters"/>
 		<paging name="listing_paging"/>
+		<filterSearch name="fulltext"/>
 	</listingToolbar>
+	<massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete selected items?</message>
+                        <title translate="true">Delete items</title>
+                    </confirm>
+                    <url path="lof_producttags/tag/massDelete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                </settings>
+            </action>
+            <action name="disable">
+                <settings>
+                    <url path="lof_producttags/tag/massDisable"/>
+                    <type>disable</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+            <action name="enable">
+                <settings>
+                    <url path="lof_producttags/tag/massEnable"/>
+                    <type>enable</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
+    </massaction>
 	<columns name="lof_producttags_tag_columns">
 		<selectionsColumn name="ids">
 			<settings>
@@ -42,14 +78,44 @@
 			<settings>
 				<filter>text</filter>
 				<sorting>asc</sorting>
-				<label translate="true">ID</label>
+				<label translate="true">Tag ID</label>
 			</settings>
 		</column>
-		<column name="tag_name">
+		<column name="status" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Magento\Cms\Model\Page\Source\IsActive"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+		<column name="tag_title">
 			<settings>
 				<filter>text</filter>
-				<label translate="true">tag_name</label>
+				<label translate="true">Title</label>
 			</settings>
 		</column>
+		<column name="number_products">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">number of products</label>
+			</settings>
+		</column>
+		<column name="created_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Created At</label>
+			</settings>
+		</column>
+		<actionsColumn name="actions" class="Lof\ProductTags\Ui\Component\Listing\Column\TagActions">
+            <settings>
+                <indexField>tag_id</indexField>
+                <resizeEnabled>false</resizeEnabled>
+                <resizeDefaultWidth>107</resizeDefaultWidth>
+            </settings>
+        </actionsColumn>
 	</columns>
 </listing>
