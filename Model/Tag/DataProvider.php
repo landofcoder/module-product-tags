@@ -5,7 +5,7 @@
  */
 namespace Lof\ProductTags\Model\Tag;
 
-use Magento\Cms\Model\ResourceModel\Page\CollectionFactory;
+use Lof\ProductTags\Model\ResourceModel\Tag\CollectionFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Ui\DataProvider\Modifier\PoolInterface;
 
@@ -15,7 +15,7 @@ use Magento\Ui\DataProvider\Modifier\PoolInterface;
 class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
 {
     /**
-     * @var \Magento\Cms\Model\ResourceModel\Page\Collection
+     * @var \Lof\ProductTags\Model\ResourceModel\Tag\Collection
      */
     protected $collection;
 
@@ -33,7 +33,7 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param CollectionFactory $pageCollectionFactory
+     * @param CollectionFactory $tagCollectionFactory
      * @param DataPersistorInterface $dataPersistor
      * @param array $meta
      * @param array $data
@@ -43,13 +43,13 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        CollectionFactory $pageCollectionFactory,
+        CollectionFactory $tagCollectionFactory,
         DataPersistorInterface $dataPersistor,
         array $meta = [],
         array $data = [],
         PoolInterface $pool = null
     ) {
-        $this->collection = $pageCollectionFactory->create();
+        $this->collection = $tagCollectionFactory->create();
         $this->dataPersistor = $dataPersistor;
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data, $pool);
         $this->meta = $this->prepareMeta($this->meta);
@@ -82,12 +82,12 @@ class DataProvider extends \Magento\Ui\DataProvider\ModifierPoolDataProvider
             $this->loadedData[$page->getId()] = $page->getData();
         }
 
-        $data = $this->dataPersistor->get('cms_page');
+        $data = $this->dataPersistor->get('lof_producttags_tag');
         if (!empty($data)) {
             $page = $this->collection->getNewEmptyItem();
             $page->setData($data);
             $this->loadedData[$page->getId()] = $page->getData();
-            $this->dataPersistor->clear('cms_page');
+            $this->dataPersistor->clear('lof_producttags_tag');
         }
 
         return $this->loadedData;

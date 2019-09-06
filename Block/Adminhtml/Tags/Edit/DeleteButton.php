@@ -18,7 +18,7 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
     public function getButtonData()
     {
         $data = [];
-        if ($this->getBlockId()) {
+        if ($this->getTagId()) {
             $data = [
                 'label' => __('Delete Tag'),
                 'class' => 'delete',
