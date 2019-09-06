@@ -5,7 +5,7 @@
 ?>
 <?php
 $tags = $this->getTagCollection();
-$title = $this->getTagHelper()->getGeneralConfig("product_tag_title");
+$title = $this->getTagHelper()->getGeneralConfig("tag_sidebar_title");
 if($tags && $tags->getSize()){
 	?>
 	<div class="block block-tags block-product-tags">
@@ -20,7 +20,7 @@ if($tags && $tags->getSize()){
                     }
                     a:hover{
                         color: black;
-						text-decoration: none;
+                        text-decoration: none;
                     }
                 </style>
                 <?php 
