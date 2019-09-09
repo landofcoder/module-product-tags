@@ -61,8 +61,18 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
                     return $resultRedirect->setPath('*/*/');
                 }
             }
-
             $model->setData($data);
+            if (isset($data['tag_products'])
+                && is_string($data['tag_products'])) {
+                $products = json_decode($data['tag_products'], true);
+                $model->setPostedProducts($products);
+            }
+            $this->_eventManager->dispatch(
+                'lof_producttags_prepare_save',
+                ['tag' => $model, 'request' => $this->getRequest()]
+            );
+            $products = $model->getPostedProducts();
+
             try{
                 $model->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the tag.'));
@@ -75,8 +85,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             }
 
             $this->dataPersistor->set('lof_productags_tag', $data);
-            $this->dataPersistor->set('lof_producttags_product', $data);
-            $this->dataPersistor->set('lof_producttags_store', $data);
             return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
         return $resultRedirect->setPath('*/*/');
@@ -84,7 +92,7 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';
-
+        // $position = $model->getProductsPosition();
         if ($redirect ==='continue') {
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $model->getId()]);
         } else if ($redirect === 'close') {
@@ -94,12 +102,11 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             $duplicateModel->setId(null);
             $duplicateModel->setIdentifier($data['identifier'] . '-' . uniqid());
             $duplicateModel->setIsActive(Tag::STATUS_DISABLED);
+            // $duplicateModel->setProductPosition($position);
             $this->tagRepository->save($duplicateModel);
             $id = $duplicateModel->getId();
             $this->messageManager->addSuccessMessage(__('You duplicated the tag.'));
             $this->dataPersistor->set('lof_productags_tag', $data);
-            $this->dataPersistor->set('lof_producttags_product', $data);
-            $this->dataPersistor->set('lof_producttags_store', $data);
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
         return $resultRedirect;
