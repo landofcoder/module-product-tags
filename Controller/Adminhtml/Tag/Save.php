@@ -55,7 +55,7 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             $id = $this->getRequest()->getParam('tag_id');
             if ($id) {
                 try {
-                    $model = $this->tagRepository->getById($id);
+                    $model = $model->load($id);
                 } catch (LocalizedException $e) {
                     $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
                     return $resultRedirect->setPath('*/*/');
@@ -75,6 +75,8 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             }
 
             $this->dataPersistor->set('lof_productags_tag', $data);
+            $this->dataPersistor->set('lof_producttags_product', $data);
+            $this->dataPersistor->set('lof_producttags_store', $data);
             return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
         return $resultRedirect->setPath('*/*/');
@@ -96,6 +98,8 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             $id = $duplicateModel->getId();
             $this->messageManager->addSuccessMessage(__('You duplicated the tag.'));
             $this->dataPersistor->set('lof_productags_tag', $data);
+            $this->dataPersistor->set('lof_producttags_product', $data);
+            $this->dataPersistor->set('lof_producttags_store', $data);
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
         return $resultRedirect;
