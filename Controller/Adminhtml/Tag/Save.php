@@ -92,7 +92,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';
-        // $position = $model->getProductsPosition();
         if ($redirect ==='continue') {
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $model->getId()]);
         } else if ($redirect === 'close') {
@@ -102,7 +101,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             $duplicateModel->setId(null);
             $duplicateModel->setIdentifier($data['identifier'] . '-' . uniqid());
             $duplicateModel->setIsActive(Tag::STATUS_DISABLED);
-            // $duplicateModel->setProductPosition($position);
             $this->tagRepository->save($duplicateModel);
             $id = $duplicateModel->getId();
             $this->messageManager->addSuccessMessage(__('You duplicated the tag.'));

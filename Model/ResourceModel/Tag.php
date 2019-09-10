@@ -35,7 +35,6 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
         return $this->_tagProductTable;
     }
-
     protected function _saveTagProducts($tag)
     {
         $tag->setIsChangedProductList(false);
@@ -115,7 +114,6 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             $productIds = array_unique(array_merge(array_keys($insert), array_keys($delete)));
             $tag->setChangedProductIds($productIds);
         }
-
         if (!empty($insert) || !empty($update) || !empty($delete)) {
             $tag->setIsChangedProductList(true);
 
