@@ -7,9 +7,7 @@ namespace Lof\ProductTags\Ui\Component\Listing\Column\Tag;
 
 use Magento\Store\Ui\Component\Listing\Column\Store\Options as StoreOptions;
 
-/**
- * Store Options for Cms Pages and Blocks
- */
+
 class Options extends StoreOptions
 {
     /**
