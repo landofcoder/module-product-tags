@@ -13,7 +13,7 @@ if($tags && $tags->getSize()){
 		<div class="block-content">
 			<ul style="padding: 0px;" class="list-tags">
 				<?php foreach($tags as $tag): ?>
-				<li style="list-style-type: none; float: left; margin:5px 10px; border: 1px solid #000000; border-radius: 5px; padding: 5px;"><a href="<?php echo $tag->getIdentifier(); ?>">
+				<li style="list-style-type: none; float: left; margin:5px 10px; border: 1px solid #000000; border-radius: 5px; padding: 5px;"><a href="<?php echo $this->getTagHelper()->getTagUrl($tag->getIdentifier()); ?>">
 				<style>
                     li:hover{
                         background-color: #e4e4e4;
