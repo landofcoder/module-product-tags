@@ -15,7 +15,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 
 /**
- * Save CMS Tag action.
+ * Save Lof Tag action.
  */
 class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPostActionInterface
 {
@@ -51,7 +51,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
 
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
-
             $id = $this->getRequest()->getParam('tag_id');
             if ($id) {
                 try {

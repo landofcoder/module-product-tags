@@ -34,9 +34,7 @@ interface TagRepositoryInterface
      * @return \Lof\ProductTags\Api\Data\TagInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function save(
-        \Lof\ProductTags\Api\Data\TagInterface $tag
-    );
+    public function save(\Lof\ProductTags\Api\Data\TagInterface $tag);
 
     /**
      * Retrieve Tag

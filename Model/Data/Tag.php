@@ -40,7 +40,7 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     /**
      * Set tag_id
      * @param string $tagId
-     * @return \Lof\ProductTags\Api\Data\TagInterface
+     * @return $this
      */
     public function setTagId($tagId)
     {
@@ -48,41 +48,112 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     }
 
     /**
-     * Get tag_name
+     * Get tag_title
      * @return string|null
      */
-    public function getTagName()
+    public function getTagTitle()
     {
-        return $this->_get(self::TAG_NAME);
+        return $this->_get(self::TAG_TITLE);
     }
 
     /**
-     * Set tag_name
-     * @param string $tagName
+     * Set tag_title
+     * @param string $tagTitle
      * @return \Lof\ProductTags\Api\Data\TagInterface
      */
-    public function setTagName($tagName)
+    public function setTagTitle($tagTitle)
     {
-        return $this->setData(self::TAG_NAME, $tagName);
+        return $this->setData(self::TAG_TITLE, $tagTitle);
     }
 
     /**
-     * Retrieve existing extension attributes object or create a new one.
-     * @return \Lof\ProductTags\Api\Data\TagExtensionInterface|null
+     * Set status
+     *
+     * @return bool|null
      */
-    public function getExtensionAttributes()
-    {
-        return $this->_getExtensionAttributes();
+    public function getStatus(){
+        return $this->_get(self::TAG_STATUS);
     }
-
     /**
-     * Set an extension attributes object.
-     * @param \Lof\ProductTags\Api\Data\TagExtensionInterface $extensionAttributes
+     * Set status
+     *
+     * @param bool|null
      * @return $this
      */
-    public function setExtensionAttributes(
-        \Lof\ProductTags\Api\Data\TagExtensionInterface $extensionAttributes
-    ) {
-        return $this->_setExtensionAttributes($extensionAttributes);
+    public function setStatus($status){
+        return $this->setData(self::TAG_STATUS, $status);
     }
+
+     /**
+     * Set identifier
+     *
+     * @return string|null
+     */
+    public function getIdentifier(){
+        return $this->_get(self::TAG_IDENTIFIER);
+    }
+    /**
+     * Set identifier
+     *
+     * @param string|null
+     * @return $this
+     */
+    public function setIdentifier($identifier){
+        return $this->setData(self::TAG_IDENTIFIER, $identifier);
+    }
+
+    /**
+     * Set tag_description
+     *
+     * @return string|null
+     */
+    public function getTagDescription(){
+        return $this->_get(self::TAG_DESCRIPTION);
+    }
+    /**
+     * Set tag_description
+     *
+     * @param string|null
+     * @return $this
+     */
+    public function setTagDescription($tagDescription){
+        return $this->setData(self::TAG_DESCRIPTION, $tagDescription);
+    }
+
+    /**
+     * Set StoreId
+     *
+     * @return int|null
+     */
+    public function getStoreId(){
+        return $this->_get("store_id");
+    }
+    /**
+     * Set storeId
+     *
+     * @param int|null
+     * @return $this
+     */
+    public function setStoreId($storeId){
+        return $this->setData("store_id", $storeId);
+    }
+
+    /**
+     * Set products
+     *
+     * @return array|null
+     */
+    public function getProducts(){
+        return $this->_get("products");
+    }
+    /**
+     * Set products
+     *
+     * @param array|null
+     * @return $this
+     */
+    public function setProducts($products){
+        return $this->setData("products", $products);
+    }
+
 }

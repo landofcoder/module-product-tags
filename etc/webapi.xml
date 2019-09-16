@@ -15,10 +15,10 @@
 	<route method="POST" url="/V1/lof-producttags/tag">
 		<service class="Lof\ProductTags\Api\TagRepositoryInterface" method="save"/>
 		<resources>
-			<resource ref="Lof_ProductTags::Tag_save"/>
+			<resource ref="Lof_ProductTags::Tag_add"/>
 		</resources>
 	</route>
-	<route method="GET" url="/V1/lof-producttags/tag/search">
+	<route method="POST" url="/V1/lof-producttags/tag/search">
 		<service class="Lof\ProductTags\Api\TagRepositoryInterface" method="getList"/>
 		<resources>
 			<resource ref="Lof_ProductTags::Tag_view"/>

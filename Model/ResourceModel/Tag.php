@@ -25,6 +25,8 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     protected function _afterSave(AbstractModel $object)
     {
         $this->_saveTagProducts($object);
+        $this->_saveTagStores($object);
+        $this->_saveTagStores($object);
         return parent::_afterSave($object);
     }
 
@@ -125,6 +127,103 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
 
         return $this;
+    }
+    protected function _saveTagStores($tag)
+    {
+        $oldStores = $this->lookupStoreIds($object->getId());
+        $newStores = (array)$object->getStores();
+        if (empty($newStores)) {
+            $newStores = (array)$object->getStoreId();
+        }
+        $table = $this->getTable('lof_producttags_store');
+        $insert = array_diff($newStores, $oldStores);
+        $delete = array_diff($oldStores, $newStores);
+        if ($delete) {
+            $where = ['tag_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+            $this->getConnection()->delete($table, $where);
+        }
+        if ($insert) {
+            $data = [];
+            foreach ($insert as $storeId) {
+                $data[] = ['tag_id' => (int)$object->getId(), 'store_id' => (int)$storeId];
+            }
+            $this->getConnection()->insertMultiple($table, $data);
+        }
+        return $this;
+    }
+    // protected function _saveTagTag($tag)
+    // {
+    //     $oldTag = $this->lookupTagIds($object->getId());
+    //     $newTag = (array)$object->getTag();
+    //     if (empty($newTag)) {
+    //         $newTag = (array)$object->getTagId();
+    //     }
+    //     $table = $this->getTable('lof_producttags_tag');
+    //     $insert = array_diff($newTag, $oldTag);
+    //     $delete = array_diff($oldTag, $newTag);
+    //     if ($delete) {
+    //         $where = ['tag_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+    //         $this->getConnection()->delete($table, $where);
+    //     }
+    //     if ($insert) {
+    //         $data = [];
+    //         foreach ($insert as $tagId) {
+    //             $data[] = ['tag_id' => (int)$tagId, 'tag_title' => (int)$object->getTagTitle(), 'status' => (bool)$object->getStatus(),
+    //              'identifier' => (string)$object->getIdentifier(), 'tag_title' => (int)$object->getTagTitle(),
+    //             'tag_description' => (string)$object->getTagDescription()];
+    //         }
+    //         $this->getConnection()->insertMultiple($table, $data);
+    //     }
+    //     return $this;
+    // }
+
+    
+    /**
+     * Perform operations after object load
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _afterLoad(\Magento\Framework\Model\AbstractModel $object)
+    {
+        if ($object->getId()) {
+            $stores = $this->lookupStoreIds($object->getId());
+            $object->setData('store_id', $stores);
+        }
+        return parent::_afterLoad($object);
+    }
+    /**
+     * Get store ids to which specified item is assigned
+     *
+     * @param int $tagId
+     * @return array
+     */
+    public function lookupStoreIds($tagId)
+    {
+        $connection = $this->getConnection();
+        $select = $connection->select()->from(
+            $this->getTable('lof_producttags_store'),
+            'store_id'
+            )
+        ->where(
+            'tag_id = ?',
+            (int)$tagId
+            );
+        return $connection->fetchCol($select);
+    }
+     /**
+     * Process brand data before deleting
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _beforeDelete(\Magento\Framework\Model\AbstractModel $object)
+    {
+        $condition = ['tag_id = ?' => (int)$object->getId()];
+        $this->getConnection()->delete($this->getTable('lof_producttags_store'), $condition);
+        $condition = ['tag_id = ?' => (int)$object->getId()];
+        $this->getConnection()->delete($this->getTable('lof_producttags_product'), $condition);
+        return parent::_beforeDelete($object);
     }
     /**
      * Get positions of associated to tag products

@@ -83,15 +83,19 @@ class TagRepository implements TagRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function save(
-        \Lof\ProductTags\Api\Data\TagInterface $tag
-    ) {
-        if (empty($tag->getStoreId())) {
+    public function save(\Lof\ProductTags\Api\Data\TagInterface $tagData) {
+        if (empty($tagData->getStoreId())) {
             $storeId = $this->storeManager->getStore()->getId();
-            $tag->setStoreId($storeId);
-        }   
-        $tagModel = $this->tagFactory->create()->setData($tagData);
-        
+            $tagData->setStoreId($storeId);
+        }
+        $tagModel = $this->tagFactory->create();
+        $tagModel->setData($tagData);
+        if($tagData->getTagId()){
+            $tagModel->load((int)$tagData->getTagId());
+        }
+        if ($products = $tagData->getProducts()) {
+            $tagModel->setPostedProducts($products);
+        }
         try {
             $this->resource->save($tagModel);
         } catch (\Exception $exception) {
@@ -108,12 +112,12 @@ class TagRepository implements TagRepositoryInterface
      */
     public function getById($tagId)
     {
-        $tag = $this->tagFactory->create();
-        $this->resource->load($tag, $tagId);
-        if (!$tag->getId()) {
+        $tagModel = $this->tagFactory->create();
+        $tagModel->load($tagId);
+        if (!$tagModel->getId()) {
             throw new NoSuchEntityException(__('Tag with id "%1" does not exist.', $tagId));
         }
-        return $tag->getDataModel();
+        return $tagModel->getDataModel();
     }
 
     /**
@@ -152,8 +156,8 @@ class TagRepository implements TagRepositoryInterface
     ) {
         try {
             $tagModel = $this->tagFactory->create();
-            $this->resource->load($tagModel, $tag->getTagId());
-            $this->resource->delete($tagModel);
+            $tagModel->load($tag->getTagId());
+            $tagModel->delete();
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__(
                 'Could not delete the Tag: %1',
@@ -168,6 +172,25 @@ class TagRepository implements TagRepositoryInterface
      */
     public function deleteById($tagId)
     {
-        return $this->delete($this->getById($tagId));
+        $tagData = $this->getById($tagId);
+        return $this->delete($tagData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByIdentifier($tagCode)
+    {
+        $tagData = $this->getByTagCode($tagCode);
+        return $this->delete($tagData);
+    }
+
+    public function getByTagCode($tagCode){
+        $tagModel = $this->tagFactory->create();
+        $tagModel->load("identifier", $tagCode);
+        if (!$tagModel->getId()) {
+            throw new NoSuchEntityException(__('Tag with identifier "%1" does not exist.', $tagCode));
+        }
+        return $tagModel->getDataModel();
     }
 }
