@@ -28,8 +28,8 @@ interface ProductsManagementInterface
 
     /**
      * GET for products api
-     * @param string $param
-     * @return string
+     * @param string[] $param
+     * @return string[]
      */
     public function getProducts($param);
 }
