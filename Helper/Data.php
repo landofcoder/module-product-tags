@@ -36,11 +36,17 @@ class Data extends AbstractHelper
      */
     
     protected $scopeConfig;
+    public $_storeManager;
     const XML_PATH_TAG = 'lofproductags/';
-    public function __construct(Context $context,ScopeConfigInterface $scopeConfig)
+    public function __construct(
+        Context $context,
+        ScopeConfigInterface $scopeConfig,
+        \Magento\Store\Model\StoreManagerInterface $storeManager
+        )
     {
         parent::__construct($context);
         $this->scopeConfig=$scopeConfig;
+        $this->_storeManager=$storeManager;
     }
 
     /**
@@ -55,5 +61,12 @@ class Data extends AbstractHelper
 	public function getGeneralConfig($code, $storeId = null)
 	{
 		return $this->getConfigValue(self::XML_PATH_TAG .'general/'. $code, $storeId);
-	}
+    }
+    public function getTagUrl($tag_identifier=""){
+        $route = $this->getGeneralConfig("route");
+        $route = $route?$route:"lofproducttags";
+        $url = $route."/".$tag_identifier;
+        $base_url = $this->_storeManager->getStore()->getBaseUrl();
+        return $base_url.$url;
+    }
 }
