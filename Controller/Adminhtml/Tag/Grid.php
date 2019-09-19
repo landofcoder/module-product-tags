@@ -41,7 +41,7 @@ class Grid extends \Lof\ProductTags\Controller\Adminhtml\Tag
      */
     public function execute()
     {
-        $tag = $this->_initTag(true);
+        $tag = $this->_initTag();
         if (!$tag) {
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();

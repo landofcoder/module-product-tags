@@ -11,7 +11,7 @@ use Magento\Backend\App\Action;
 /**
  * Edit CMS page action.
  */
-class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
+class Edit extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpGetActionInterface
 {
     /**
      * Authorization level of a basic admin session
@@ -72,21 +72,9 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
     public function execute()
     {
         // 1. Get ID and create model
-        $id = $this->getRequest()->getParam('tag_id');
-        $model = $this->_objectManager->create(\Lof\ProductTags\Model\Tag::class);
-
+        $tag = $this->_initTag();
+        $id = $tag->getId();
         // 2. Initial checking
-        if ($id) {
-            $model->load($id);
-            if (!$model->getId()) {
-                $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
-                /** \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
-                $resultRedirect = $this->resultRedirectFactory->create();
-                return $resultRedirect->setPath('*/*/');
-            }
-        }
-
-        $this->_coreRegistry->register('product_tag', $model);
 
         // 5. Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
@@ -97,7 +85,7 @@ class Edit extends \Magento\Backend\App\Action implements HttpGetActionInterface
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Tags'));
         $resultPage->getConfig()->getTitle()
-            ->prepend($model->getId() ? $model->getTitle() : __('New Tag'));
+            ->prepend($tag->getId() ? $tag->getTagTitle() : __('New Tag'));
 
         return $resultPage;
     }
