@@ -85,7 +85,7 @@ class TagRepository implements TagRepositoryInterface
      */
     public function save($tagData){
         
-        if (empty($tagData->getStoreId())) {
+                if (empty($tagData->getStoreId())) {
             $storeId = $this->storeManager->getStore()->getId();
             $tagData->setStoreId($storeId);
         }
@@ -93,7 +93,7 @@ class TagRepository implements TagRepositoryInterface
         if($tagData->getTagId()){
             $tagModel->load((int)$tagData->getTagId());
         }
-        $tagModel->setData($tagData);
+        $this->resource->save($tagData);
 
         if ($products = $tagData->getProducts()) {
             $tagModel->setPostedProducts($products);

@@ -22,11 +22,11 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @return $this
      * @throws LocalizedException
      */
-    protected function _afterSave(AbstractModel $object)
+    protected function _afterSave($tag)
     {
-        $this->_saveTagProducts($object);
-        $this->_saveTagStores($object);
-        return parent::_afterSave($object);
+        $this->_saveTagProducts($tag);
+        $this->_saveTagStores($tag);
+        return parent::_afterSave($tag);
     }
 
      public function getTagProductTable()
@@ -129,10 +129,10 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     }
     protected function _saveTagStores($tag)
     {
-        $oldStores = $this->lookupStoreIds($object->getId());
-        $newStores = (array)$object->getStores();
+        $oldStores = $this->lookupStoreIds($tag->getId());
+        $newStores = (array)$tag->getStores();
         if (empty($newStores)) {
-            $newStores = (array)$object->getStoreId();
+            $newStores = (array)$tag->getStoreId();
         }
         $table = $this->getTable('lof_producttags_store');
         $insert = array_diff($newStores, $oldStores);
@@ -144,7 +144,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         if ($insert) {
             $data = [];
             foreach ($insert as $storeId) {
-                $data[] = ['tag_id' => (int)$object->getId(), 'store_id' => (int)$storeId];
+                $data[] = ['tag_id' => (int)$tag->getId(), 'store_id' => (int)$storeId];
             }
             $this->getConnection()->insertMultiple($table, $data);
         }
