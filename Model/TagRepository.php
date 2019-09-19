@@ -93,7 +93,7 @@ class TagRepository implements TagRepositoryInterface
         $tagModel = $this->tagFactory->create()->setData($tagData);
         
         try {
-            $this->resource->save($tagModel);
+            $this->resource->save($tagData);
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__(
                 'Could not save the tag: %1',
