@@ -56,13 +56,11 @@ interface TagRepositoryInterface
 
     /**
      * Delete Tag
-     * @param \Lof\ProductTags\Api\Data\TagInterface $tag
+     * @param bool $tagId
      * @return bool true on success
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function delete(
-        \Lof\ProductTags\Api\Data\TagInterface $tag
-    );
+    public function delete($tagId);
 
     /**
      * Delete Tag by ID

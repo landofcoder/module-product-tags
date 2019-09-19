@@ -3,6 +3,7 @@
 	<preference for="Lof\ProductTags\Api\TagsManagementInterface" type="Lof\ProductTags\Model\TagsManagement"/>
 	<preference for="Lof\ProductTags\Api\ProductsManagementInterface" type="Lof\ProductTags\Model\ProductsManagement"/>
 	<preference for="Lof\ProductTags\Api\TagRepositoryInterface" type="Lof\ProductTags\Model\TagRepository"/>
+	<preference for="Lof\ProductTags\Api\Data\TagInterface" type="Lof\ProductTags\Model\TagRepository"/>
 	<preference for="Lof\ProductTags\Api\Data\TagInterface" type="Lof\ProductTags\Model\Tag"/>
 	<preference for="Lof\ProductTags\Api\Data\TagSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
 	<virtualType name="Lof\ProductTags\Model\ResourceModel\Tag\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">

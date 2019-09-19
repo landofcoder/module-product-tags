@@ -83,19 +83,22 @@ class TagRepository implements TagRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function save(\Lof\ProductTags\Api\Data\TagInterface $tagData) {
+    public function save($tagData){
+        
         if (empty($tagData->getStoreId())) {
             $storeId = $this->storeManager->getStore()->getId();
             $tagData->setStoreId($storeId);
         }
         $tagModel = $this->tagFactory->create();
-        $tagModel->setData($tagData);
         if($tagData->getTagId()){
             $tagModel->load((int)$tagData->getTagId());
         }
+        $tagModel->setData($tagData);
+
         if ($products = $tagData->getProducts()) {
             $tagModel->setPostedProducts($products);
         }
+
         try {
             $this->resource->save($tagModel);
         } catch (\Exception $exception) {
@@ -104,7 +107,7 @@ class TagRepository implements TagRepositoryInterface
                 $exception->getMessage()
             ));
         }
-        return $tagModel->getDataModel();
+        return $tagData;
     }
     
     /**
@@ -117,7 +120,7 @@ class TagRepository implements TagRepositoryInterface
         if (!$tagModel->getId()) {
             throw new NoSuchEntityException(__('Tag with id "%1" does not exist.', $tagId));
         }
-        return $tagModel->getDataModel();
+        return $tagModel->getData();
     }
 
     /**
@@ -151,12 +154,12 @@ class TagRepository implements TagRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function delete(
-        \Lof\ProductTags\Api\Data\TagInterface $tag
-    ) {
+    public function delete($tagId) {
         try {
             $tagModel = $this->tagFactory->create();
-            $tagModel->load($tag->getTagId());
+            // secelt * from table where `tag_id` = $tagId
+            $tagModel->load($tagId);
+            // $tagModel->getCollection()->addFieldToFilter('tag_id',$tagId);
             $tagModel->delete();
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__(
@@ -173,7 +176,7 @@ class TagRepository implements TagRepositoryInterface
     public function deleteById($tagId)
     {
         $tagData = $this->getById($tagId);
-        return $this->delete($tagData);
+        return $this->delete($tagId);
     }
 
     /**

@@ -94,29 +94,16 @@ interface TagInterface
     /**
      * Set products
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getProducts();
     /**
      * Set products
      *
-     * @param string[]
+     * @param string[]|null
      * @return $this
      */
     public function setProducts($products);
 
-    /**
-     * Retrieve existing extension attributes object or create a new one.
-     * @return \Lof\ProductTags\Api\Data\TagExtensionInterface|null
-     */
-    // public function getExtensionAttributes();
-
-    // /**
-    //  * Set an extension attributes object.
-    //  * @param \Lof\ProductTags\Api\Data\TagExtensionInterface $extensionAttributes
-    //  * @return $this
-    //  */
-    // public function setExtensionAttributes(
-    //     \Lof\ProductTags\Api\Data\TagExtensionInterface $extensionAttributes
-    // );
+    
 }

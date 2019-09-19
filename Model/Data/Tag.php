@@ -141,7 +141,7 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     /**
      * Set products
      *
-     * @return array|null
+     * @return string[]|null
      */
     public function getProducts(){
         return $this->_get("products");
@@ -149,7 +149,7 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     /**
      * Set products
      *
-     * @param array|null
+     * @param string[]|null
      * @return $this
      */
     public function setProducts($products){

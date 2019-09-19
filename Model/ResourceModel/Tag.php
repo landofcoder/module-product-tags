@@ -26,7 +26,6 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     {
         $this->_saveTagProducts($object);
         $this->_saveTagStores($object);
-        $this->_saveTagStores($object);
         return parent::_afterSave($object);
     }
 
@@ -151,31 +150,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
         return $this;
     }
-    // protected function _saveTagTag($tag)
-    // {
-    //     $oldTag = $this->lookupTagIds($object->getId());
-    //     $newTag = (array)$object->getTag();
-    //     if (empty($newTag)) {
-    //         $newTag = (array)$object->getTagId();
-    //     }
-    //     $table = $this->getTable('lof_producttags_tag');
-    //     $insert = array_diff($newTag, $oldTag);
-    //     $delete = array_diff($oldTag, $newTag);
-    //     if ($delete) {
-    //         $where = ['tag_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
-    //         $this->getConnection()->delete($table, $where);
-    //     }
-    //     if ($insert) {
-    //         $data = [];
-    //         foreach ($insert as $tagId) {
-    //             $data[] = ['tag_id' => (int)$tagId, 'tag_title' => (int)$object->getTagTitle(), 'status' => (bool)$object->getStatus(),
-    //              'identifier' => (string)$object->getIdentifier(), 'tag_title' => (int)$object->getTagTitle(),
-    //             'tag_description' => (string)$object->getTagDescription()];
-    //         }
-    //         $this->getConnection()->insertMultiple($table, $data);
-    //     }
-    //     return $this;
-    // }
+   
 
     
     /**
