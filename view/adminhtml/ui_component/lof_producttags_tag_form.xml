@@ -110,7 +110,7 @@
                 </validation>
                 <dataType>text</dataType>
                 <label translate="true">Identifier</label>
-                <dataScope>identifier</dataScope>
+                <dataScope>Identifier</dataScope>
             </settings>
         </field>
 

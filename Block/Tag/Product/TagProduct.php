@@ -21,9 +21,9 @@
  * SOFTWARE.
  */
 
-namespace Lof\ProductTags\Block\Tag;
+namespace Lof\ProductTags\Block\Tag\Product;
 
-class View extends \Magento\Framework\View\Element\Template
+class TagProduct extends \Magento\Framework\View\Element\Template
 {
     protected $resultPageFactory;
 
@@ -38,13 +38,11 @@ class View extends \Magento\Framework\View\Element\Template
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Lof\ProductTags\Model\TagFactory $tagFactory,
         \Lof\ProductTags\Helper\Data $tagdata,
-        \Magento\Framework\Registry $registry,
         array $data = []
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_tagFactory = $tagFactory;
         $this->_tagHelper = $tagdata;
-        $this->_coreRegistry = $registry;
         parent::__construct($context, $data);
     }
     public function _toHtml(){
@@ -55,73 +53,19 @@ class View extends \Magento\Framework\View\Element\Template
     function getTagHelper(){
         return $this->_tagHelper;
     }
-    public function getCurrentTag()
+    public function getTagCollection()
     {
-        $tag = $this->_coreRegistry->registry('current_tag');
-        if ($tag) {
-            $this->setData('current_tag', $tag);
+        if(!$this->_tagcollection){
+            $limit = $this->_tagHelper->getGeneralConfig('number_tags');
+            $limit = $limit?(int)$limit:10;
+            $tag = $this->_tagFactory->create();
+            $collection = $tag->getCollection();
+            $collection->addFieldToFilter("status", 1);
+            $collection->setOrder("tag_id","DESC");
+            $collection->setPageSize($limit);
+            //$collection->setLimit($limit);
+            $this->_tagcollection = $collection;
         }
-        return $tag;
-    }
-
-     /**
-     * Prepare breadcrumbs
-     *
-     * @param \Magento\Cms\Model\Page $brand
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @return void
-     */
-    protected function _addBreadcrumbs()
-    {
-        $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
-        $baseUrl = $this->_storeManager->getStore()->getBaseUrl();
-        $tag = $this->getCurrentTag();
-       
-        if($breadcrumbsBlock)
-        {
-        $breadcrumbsBlock->addCrumb(
-            'home',
-            [
-                'label' => __('Home'),
-                'title' => __('Go to Home Page'),
-                'link' => $baseUrl
-            ]
-            );
-        
-        $breadcrumbsBlock->addCrumb(
-            'tag',
-            [
-                'label' => $tag->getTagTitle(),
-                'title' => $tag->getTagTitle(),
-                'link' => ''
-            ]
-            );
-        }
-    }
-    /**
-     * @return string
-     */
-    public function getProductListHtml()
-    {
-    	return $this->getChildHtml('product_list');
-    }
-    /**
-     * Prepare global layout
-     *
-     * @return $this
-     */
-    protected function _prepareLayout()
-    {
-        $tag = $this->getCurrentTag();
-        $page_title = $tag->getTagTitle();
-        $meta_description = $tag->getTagDescription();
-        $this->_addBreadcrumbs();
-        if($page_title){
-            $this->pageConfig->getTitle()->set($page_title);   
-        }
-        if($meta_description){
-            $this->pageConfig->setDescription($meta_description);   
-        }
-        return parent::_prepareLayout();
+        return $this->_tagcollection;
     }
 }

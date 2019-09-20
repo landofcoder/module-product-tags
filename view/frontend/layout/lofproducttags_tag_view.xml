@@ -1,8 +1,34 @@
 <?xml version="1.0" ?>
-<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
 	<body>
-		<referenceContainer name="content">
-			<block class="Lof\ProductTags\Block\Tag\View" name="tag.view" template="Lof_ProductTags::tag/view.phtml"/>
+		<referenceContainer name="columns.top">
+			<block class="Lof\ProductTags\Block\Tag\View" name="tag.view.title" template="Lof_ProductTags::tag/title.phtml"/>
 		</referenceContainer>
+		<referenceContainer name="sidebar.main">
+           <block class="Lof\ProductTags\Block\Tag\Product\Sidebar" name="tag.view.listing" template="Lof_ProductTags::tag/product/listProduct.phtml"/>
+        </referenceContainer>
+		<referenceContainer name="content">
+            <block class="Lof\ProductTags\Block\Tag\View" name="tag.products" template="Lof_ProductTags::tag/view.phtml">
+                <block class="Lof\ProductTags\Block\Tag\View\ListProduct" name="tag.products.list" as="product_list" template="Magento_Catalog::product/list.phtml">
+                    <container name="category.product.list.additional" as="additional" />
+                    <block class="Magento\Framework\View\Element\RendererList" name="category.product.type.details.renderers" as="details.renderers">
+                        <block class="Magento\Framework\View\Element\Template" as="default"/>
+                    </block>
+                    <block class="Magento\Catalog\Block\Product\ProductList\Toolbar" name="product_list_toolbar" template="Magento_Catalog::product/list/toolbar.phtml">
+                        <block class="Magento\Theme\Block\Html\Pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="setToolbarBlockName">
+                        <argument name="name" xsi:type="string">product_list_toolbar</argument>
+                    </action>
+                </block>
+            </block>
+            <block class="Magento\Cookie\Block\RequireCookie" name="require-cookie" template="Magento_Cookie::require_cookie.phtml">
+                <arguments>
+                    <argument name="triggers" xsi:type="array">
+                        <item name="compareProductLink" xsi:type="string">.action.tocompare</item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
 	</body>
 </page>
