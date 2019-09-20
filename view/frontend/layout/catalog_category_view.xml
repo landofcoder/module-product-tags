@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<page layout="2column-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<body>
+		<!-- <move element="catalog.product.related" destination="sidebar.additional" after="tag.view"/> -->
+		<!-- <referenceBlock name="catalog.compare.sidebar" remove="true" />
+		<referenceBlock name="wishlist_sidebar" remove="true" /> -->
+		<referenceContainer name="sidebar.main">
+			<block class="Lof\ProductTags\Block\Tag\Product\ListProduct" name="tag.view" template="Lof_ProductTags::tag/product/listProduct.phtml"/>
+		</referenceContainer>
+	</body>
+</page>

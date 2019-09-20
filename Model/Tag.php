@@ -60,6 +60,7 @@ class Tag extends \Magento\Framework\Model\AbstractModel
     }
 
     public function getRelatedReadonly(){
-        return true;
+        return false;
     }
+   
 }

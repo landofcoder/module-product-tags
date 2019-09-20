@@ -15,7 +15,7 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
 
 /**
- * Save CMS Tag action.
+ * Save Lof Tag action.
  */
 class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPostActionInterface
 {
@@ -51,18 +51,27 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
 
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
-
             $id = $this->getRequest()->getParam('tag_id');
             if ($id) {
                 try {
-                    $model = $this->tagRepository->getById($id);
+                    $model = $model->load($id);
                 } catch (LocalizedException $e) {
                     $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
                     return $resultRedirect->setPath('*/*/');
                 }
             }
-
             $model->setData($data);
+            if (isset($data['tag_products'])
+                && is_string($data['tag_products'])) {
+                $products = json_decode($data['tag_products'], true);
+                $model->setPostedProducts($products);
+            }
+            $this->_eventManager->dispatch(
+                'lof_producttags_prepare_save',
+                ['tag' => $model, 'request' => $this->getRequest()]
+            );
+            $products = $model->getPostedProducts();
+
             try{
                 $model->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the tag.'));
@@ -82,7 +91,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';
-
         if ($redirect ==='continue') {
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $model->getId()]);
         } else if ($redirect === 'close') {
