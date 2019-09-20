@@ -22,10 +22,11 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
      * @return $this
      * @throws LocalizedException
      */
-    protected function _afterSave(AbstractModel $object)
+    protected function _afterSave($tag)
     {
-        $this->_saveTagProducts($object);
-        return parent::_afterSave($object);
+        $this->_saveTagProducts($tag);
+        $this->_saveTagStores($tag);
+        return parent::_afterSave($tag);
     }
 
      public function getTagProductTable()
@@ -125,6 +126,79 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
 
         return $this;
+    }
+    protected function _saveTagStores($tag)
+    {
+        $oldStores = $this->lookupStoreIds($tag->getId());
+        $newStores = (array)$tag->getStores();
+        if (empty($newStores)) {
+            $newStores = (array)$tag->getStoreId();
+        }
+        $table = $this->getTable('lof_producttags_store');
+        $insert = array_diff($newStores, $oldStores);
+        $delete = array_diff($oldStores, $newStores);
+        if ($delete) {
+            $where = ['tag_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+            $this->getConnection()->delete($table, $where);
+        }
+        if ($insert) {
+            $data = [];
+            foreach ($insert as $storeId) {
+                $data[] = ['tag_id' => (int)$tag->getId(), 'store_id' => (int)$storeId];
+            }
+            $this->getConnection()->insertMultiple($table, $data);
+        }
+        return $this;
+    }
+   
+
+    
+    /**
+     * Perform operations after object load
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _afterLoad(\Magento\Framework\Model\AbstractModel $object)
+    {
+        if ($object->getId()) {
+            $stores = $this->lookupStoreIds($object->getId());
+            $object->setData('store_id', $stores);
+        }
+        return parent::_afterLoad($object);
+    }
+    /**
+     * Get store ids to which specified item is assigned
+     *
+     * @param int $tagId
+     * @return array
+     */
+    public function lookupStoreIds($tagId)
+    {
+        $connection = $this->getConnection();
+        $select = $connection->select()->from(
+            $this->getTable('lof_producttags_store'),
+            'store_id'
+            )
+        ->where(
+            'tag_id = ?',
+            (int)$tagId
+            );
+        return $connection->fetchCol($select);
+    }
+     /**
+     * Process brand data before deleting
+     *
+     * @param \Magento\Framework\Model\AbstractModel $object
+     * @return $this
+     */
+    protected function _beforeDelete(\Magento\Framework\Model\AbstractModel $object)
+    {
+        $condition = ['tag_id = ?' => (int)$object->getId()];
+        $this->getConnection()->delete($this->getTable('lof_producttags_store'), $condition);
+        $condition = ['tag_id = ?' => (int)$object->getId()];
+        $this->getConnection()->delete($this->getTable('lof_producttags_product'), $condition);
+        return parent::_beforeDelete($object);
     }
     /**
      * Get positions of associated to tag products
