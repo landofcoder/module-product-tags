@@ -39,7 +39,6 @@ class TagRepository implements TagRepositoryInterface
 
     private $collectionProcessor;
 
-    protected $extensibleDataObjectConverter;
 
     /**
      * @param ResourceTag $resource
@@ -51,8 +50,6 @@ class TagRepository implements TagRepositoryInterface
      * @param DataObjectProcessor $dataObjectProcessor
      * @param StoreManagerInterface $storeManager
      * @param CollectionProcessorInterface $collectionProcessor
-     * @param JoinProcessorInterface $extensionAttributesJoinProcessor
-     * @param ExtensibleDataObjectConverter $extensibleDataObjectConverter
      */
     public function __construct(
         ResourceTag $resource,
@@ -63,9 +60,7 @@ class TagRepository implements TagRepositoryInterface
         DataObjectHelper $dataObjectHelper,
         DataObjectProcessor $dataObjectProcessor,
         StoreManagerInterface $storeManager,
-        CollectionProcessorInterface $collectionProcessor,
-        JoinProcessorInterface $extensionAttributesJoinProcessor,
-        ExtensibleDataObjectConverter $extensibleDataObjectConverter
+        CollectionProcessorInterface $collectionProcessor
     ) {
         $this->resource = $resource;
         $this->tagFactory = $tagFactory;
@@ -76,8 +71,6 @@ class TagRepository implements TagRepositoryInterface
         $this->dataObjectProcessor = $dataObjectProcessor;
         $this->storeManager = $storeManager;
         $this->collectionProcessor = $collectionProcessor;
-        $this->extensionAttributesJoinProcessor = $extensionAttributesJoinProcessor;
-        $this->extensibleDataObjectConverter = $extensibleDataObjectConverter;
     }
 
     /**
@@ -130,23 +123,14 @@ class TagRepository implements TagRepositoryInterface
         \Magento\Framework\Api\SearchCriteriaInterface $criteria
     ) {
         $collection = $this->tagCollectionFactory->create();
-        
-        $this->extensionAttributesJoinProcessor->process(
-            $collection,
-            \Lof\ProductTags\Api\Data\TagInterface::class
-        );
-        
+
         $this->collectionProcessor->process($criteria, $collection);
-        
+        //$collection->load();
+
         $searchResults = $this->searchResultsFactory->create();
         $searchResults->setSearchCriteria($criteria);
         
-        $items = [];
-        foreach ($collection as $model) {
-            $items[] = $model->getDataModel();
-        }
-        
-        $searchResults->setItems($items);
+        $searchResults->setItems($collection->getItems());
         $searchResults->setTotalCount($collection->getSize());
         return $searchResults;
     }

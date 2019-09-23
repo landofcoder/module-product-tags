@@ -156,4 +156,5 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
         return $this->setData("products", $products);
     }
 
+
 }
