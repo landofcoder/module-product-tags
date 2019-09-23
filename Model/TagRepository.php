@@ -93,14 +93,14 @@ class TagRepository implements TagRepositoryInterface
         if($tagData->getTagId()){
             $tagModel->load((int)$tagData->getTagId());
         }
-        $this->resource->save($tagData);
+        $tagModel->setData((array)$tagData);
 
         if ($products = $tagData->getProducts()) {
             $tagModel->setPostedProducts($products);
         }
 
         try {
-            $this->resource->save($tagData);
+            $tagModel->setData((array)$tagData);
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__(
                 'Could not save the tag: %1',
@@ -157,7 +157,7 @@ class TagRepository implements TagRepositoryInterface
     public function delete($tagId) {
         try {
             $tagModel = $this->tagFactory->create();
-            // secelt * from table where `tag_id` = $tagId
+            // select * from table where `tag_id` = $tagId
             $tagModel->load($tagId);
             // $tagModel->getCollection()->addFieldToFilter('tag_id',$tagId);
             $tagModel->delete();
