@@ -105,5 +105,6 @@ interface TagInterface extends \Magento\Framework\Api\ExtensibleDataInterface
      */
     public function setProducts($products);
 
+
     
 }
