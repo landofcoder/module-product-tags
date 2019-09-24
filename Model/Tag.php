@@ -59,8 +59,19 @@ class Tag extends \Magento\Framework\Model\AbstractModel
         return $array;
     }
 
-    public function getRelatedReadonly(){
+    public function loadByIdentifier($tag_code){
+        if($tag_code){
+            $tag_id = $this->getResource()->getTagIdByIdentifier($tag_code);
+            if($tag_id) {
+                $this->load((int)$tag_id);
+                return $this;
+            }
+        }
         return false;
+    }
+
+    public function getRelatedReadonly(){
+        return true;
     }
    
 }

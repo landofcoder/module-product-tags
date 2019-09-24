@@ -17,11 +17,21 @@ class IsActive implements OptionSourceInterface
      */
     protected $producttags;
 
+    /**
+     * Constructor
+     *
+     * @param \Magento\Cms\Model\Block $cmsBlock
+     */
     public function __construct(\Lof\ProductTags\Model\Tag $producttags)
     {
         $this->producttags = $producttags;
     }
 
+    /**
+     * Get options
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         $availableOptions = $this->producttags->getAvailableStatuses();

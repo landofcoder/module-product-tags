@@ -54,24 +54,14 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             $id = $this->getRequest()->getParam('tag_id');
             if ($id) {
                 try {
-                    $model = $model->load($id);
+                    $model = $this->tagRepository->getById($id);
                 } catch (LocalizedException $e) {
                     $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
                     return $resultRedirect->setPath('*/*/');
                 }
             }
-            $model->setData($data);
-            if (isset($data['tag_products'])
-                && is_string($data['tag_products'])) {
-                $products = json_decode($data['tag_products'], true);
-                $model->setPostedProducts($products);
-            }
-            $this->_eventManager->dispatch(
-                'lof_producttags_prepare_save',
-                ['tag' => $model, 'request' => $this->getRequest()]
-            );
-            $products = $model->getPostedProducts();
 
+            $model->setData($data);
             try{
                 $model->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the tag.'));
@@ -91,6 +81,7 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';
+
         if ($redirect ==='continue') {
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $model->getId()]);
         } else if ($redirect === 'close') {

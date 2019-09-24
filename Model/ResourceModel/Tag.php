@@ -220,4 +220,20 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
         return $this->getConnection()->fetchPairs($select, $bind);
     }
+    public function getTagIdByIdentifier($tag_code = ""){
+        if($tag_code) {
+            $tag_code = str_replace(array('"',"'"),"", $tag_code);
+            $tag_code = trim($tag_code);
+            $select = $this->getConnection()->select()->from(
+                $this->getTable("lof_producttags_tag"),
+                ['tag_id']
+            )->where(
+                "{$this->getTable('lof_producttags_tag')}.identifier = ?",
+                $tag_code
+            );
+
+            return $this->getConnection()->fetchOne($select);
+        }
+        return false;
+    }
 }

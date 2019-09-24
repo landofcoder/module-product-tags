@@ -42,9 +42,10 @@ abstract class Tag extends \Magento\Backend\App\Action
      * Initialize requested category and put it into registry.
      * Root category can be returned, if inappropriate store/category is specified
      *
+     * @param bool $getRootInstead
      * @return \Lof\ProductTags\Model\Tag|false
      */
-    protected function _initTag()
+    protected function _initCategory($getRootInstead = false)
     {
         $tagId = $this->resolveTagId();
         $storeId = $this->resolveStoreId();
@@ -58,7 +59,7 @@ abstract class Tag extends \Magento\Backend\App\Action
         $this->_objectManager->get(\Magento\Framework\Registry::class)->register('current_tag', $tag);
         $this->_objectManager->get(\Magento\Cms\Model\Wysiwyg\Config::class)
             ->setStoreId($storeId);
-        return $tag;
+        return $category;
     }
 
     /**
@@ -68,7 +69,7 @@ abstract class Tag extends \Magento\Backend\App\Action
      */
     private function resolveTagId() : int
     {
-        $tagId = (int)$this->getRequest()->getParam('tag_id', false);
+        $tagId = (int)$this->getRequest()->getParam('id', false);
 
         return $tagId ?: (int)$this->getRequest()->getParam('entity_id', false);
     }

@@ -5,7 +5,7 @@
 		<!-- <referenceBlock name="catalog.compare.sidebar" remove="true" />
 		<referenceBlock name="wishlist_sidebar" remove="true" /> -->
 		<referenceContainer name="sidebar.main">
-			<block class="Lof\ProductTags\Block\Tag\Product\ListProduct" name="tag.view" template="Lof_ProductTags::tag/product/listProduct.phtml"/>
+			<block class="Lof\ProductTags\Block\Tag\Product\Sidebar" name="tag.product.sidebar" template="Lof_ProductTags::tag/product/sidebar.phtml"/>
 		</referenceContainer>
 	</body>
 </page>

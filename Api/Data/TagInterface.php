@@ -1,7 +1,7 @@
 <?php
 namespace Lof\ProductTags\Api\Data;
 
-interface TagInterface
+interface TagInterface extends \Magento\Framework\Api\ExtensibleDataInterface
 {
 
     const TAG_ID = 'tag_id';
@@ -104,6 +104,7 @@ interface TagInterface
      * @return $this
      */
     public function setProducts($products);
+
 
     
 }
