@@ -1,6 +1,6 @@
 # magento2-product-tags
 ###### What is this extension about?
-Assign one or multiple tags to your products and improve the navigation for your customers, who can narrow the search results by tags in the Product Filters or, vice versa, see all products with the tags.
+Assign one or multiple tags to your products and improve the navigation for your customers, who can narrow the search results by tags in the Product Filters or, vice versa, see all products with the tags.ww
 
 ###### Install Extension
 ```
