@@ -6,6 +6,8 @@
 	<preference for="Lof\ProductTags\Api\Data\TagInterface" type="Lof\ProductTags\Model\TagRepository"/>
 	<preference for="Lof\ProductTags\Api\Data\TagInterface" type="Lof\ProductTags\Model\Tag"/>
 	<preference for="Lof\ProductTags\Api\Data\TagSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Lof\ProductTags\Api\Data\TagProductLinkInterface" type="Lof\ProductTags\Model\Data\TagProductLink" />
+
 	<virtualType name="Lof\ProductTags\Model\ResourceModel\Tag\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
 		<arguments>
 			<argument name="mainTable" xsi:type="string">lof_producttags_tag</argument>

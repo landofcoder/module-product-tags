@@ -27,6 +27,14 @@ class Tag extends \Magento\Framework\Model\AbstractModel
     protected $tagDataFactory;
     protected $dataObjectHelper;
     protected $_eventPrefix = 'lof_producttags_tag';
+
+    /**
+     * Product collection factory
+     *
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    protected $_productCollectionFactory;
+
     public function __construct(
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
@@ -34,10 +42,12 @@ class Tag extends \Magento\Framework\Model\AbstractModel
         DataObjectHelper $dataObjectHelper,
         \Lof\ProductTags\Model\ResourceModel\Tag $resource,
         \Lof\ProductTags\Model\ResourceModel\Tag\Collection $resourceCollection,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         array $data = []
     ) {
         $this->tagDataFactory = $tagDataFactory;
         $this->dataObjectHelper = $dataObjectHelper;
+        $this->_productCollectionFactory = $productCollectionFactory;
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
     }
 
@@ -91,6 +101,30 @@ class Tag extends \Magento\Framework\Model\AbstractModel
 
     public function getRelatedReadonly(){
         return true;
+    }
+
+    /**
+     * Get category products collection
+     *
+     * @return \Magento\Framework\Data\Collection\AbstractDb|false
+     */
+    public function getProductCollection()
+    {
+        if($tag_id = $this->getId()){
+            $collection = $this->_productCollectionFactory->create()->setStoreId(
+                $this->getStoreId()
+            );
+            $tag_product = $this->getResource()->getTable("lof_producttags_product");
+            $collection->getSelect()
+                        ->join(array('tag_product' =>$tag_product), 'entity_id= tag_product.product_id',
+                        array('position' => 'tag_product.position',
+                            'tag_id' => 'tag_product.tag_id'
+                        )
+                    );
+            $collection->getSelect()->where("tag_product.tag_id=".(int)$tag_id);
+            return $collection;
+        }
+        return false;
     }
    
 }

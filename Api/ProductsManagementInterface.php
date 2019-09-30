@@ -27,9 +27,9 @@ interface ProductsManagementInterface
 {
 
     /**
-     * GET for products api
-     * @param string[] $param
-     * @return string[]
+     * Get List Product by Identyfier
+     * @param string $tagCode
+     * @return \Lof\ProductTags\Api\Data\TagProductLinkInterface[]|false
      */
-    public function getProducts($param);
+    public function getProducts($tagCode);
 }
