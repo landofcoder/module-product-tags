@@ -20,7 +20,7 @@
  */
 namespace Lof\ProductTags\Api\Data;
 
-interface TagInterface extends \Magento\Framework\Api\ExtensibleDataInterface
+interface TagInterface
 {
 
     const TAG_ID = 'tag_id';
