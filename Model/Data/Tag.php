@@ -1,31 +1,29 @@
 <?php
 /**
- * Landofcoder
+ * Copyright (c) 2019  Landofcoder
  * 
- * NOTICE OF LICENSE
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  * 
- * This source file is subject to the Landofcoder.com license that is
- * available through the world-wide-web at this URL:
- * http://landofcoder.com/license
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  * 
- * DISCLAIMER
- * 
- * Do not edit or add to this file if you wish to upgrade this extension to newer
- * version in the future.
- * 
- * @category   Landofcoder
- * @package    Lof_ProductTags
- * @copyright  Copyright (c) 2019 Landofcoder (http://www.landofcoder.com/)
- * @license    http://www.landofcoder.com/LICENSE-1.0.html
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
-
 namespace Lof\ProductTags\Model\Data;
-
 use Lof\ProductTags\Api\Data\TagInterface;
-
 class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements TagInterface
 {
-
     /**
      * Get tag_id
      * @return string|null
@@ -34,7 +32,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     {
         return $this->_get(self::TAG_ID);
     }
-
     /**
      * Set tag_id
      * @param string $tagId
@@ -44,7 +41,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     {
         return $this->setData(self::TAG_ID, $tagId);
     }
-
     /**
      * Get tag_title
      * @return string|null
@@ -53,7 +49,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     {
         return $this->_get(self::TAG_TITLE);
     }
-
     /**
      * Set tag_title
      * @param string $tagTitle
@@ -63,7 +58,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     {
         return $this->setData(self::TAG_TITLE, $tagTitle);
     }
-
     /**
      * Set status
      *
@@ -81,7 +75,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     public function setStatus($status){
         return $this->setData(self::TAG_STATUS, $status);
     }
-
      /**
      * Set identifier
      *
@@ -99,7 +92,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     public function setIdentifier($identifier){
         return $this->setData(self::TAG_IDENTIFIER, $identifier);
     }
-
     /**
      * Set tag_description
      *
@@ -117,7 +109,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     public function setTagDescription($tagDescription){
         return $this->setData(self::TAG_DESCRIPTION, $tagDescription);
     }
-
     /**
      * Set StoreId
      *
@@ -135,7 +126,6 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     public function setStoreId($storeId){
         return $this->setData("store_id", $storeId);
     }
-
     /**
      * Set products
      *
@@ -153,6 +143,4 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
     public function setProducts($products){
         return $this->setData("products", $products);
     }
-
-
 }

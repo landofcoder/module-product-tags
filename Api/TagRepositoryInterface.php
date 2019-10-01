@@ -20,14 +20,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 namespace Lof\ProductTags\Api;
-
 use Magento\Framework\Api\SearchCriteriaInterface;
-
 interface TagRepositoryInterface
 {
-
     /**
      * Save Tag
      * @param \Lof\ProductTags\Api\Data\TagInterface $tag
@@ -35,7 +31,6 @@ interface TagRepositoryInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function save(\Lof\ProductTags\Api\Data\TagInterface $tag);
-
     /**
      * Retrieve Tag
      * @param string $tagId
@@ -43,7 +38,6 @@ interface TagRepositoryInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getById($tagId);
-
     /**
      * Retrieve Tag matching the specified criteria.
      * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
@@ -53,7 +47,6 @@ interface TagRepositoryInterface
     public function getList(
         \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
     );
-
     /**
      * Delete Tag
      * @param bool $tagId
@@ -61,7 +54,6 @@ interface TagRepositoryInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function delete($tagId);
-
     /**
      * Delete Tag by ID
      * @param string $tagId
