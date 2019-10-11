@@ -28,6 +28,7 @@ interface TagInterface
     const TAG_IDENTIFIER = 'identifier';
     const TAG_DESCRIPTION = 'tag_description';
     const TAG_STATUS = 'status';
+    const STORE_ID = 'store_id';
     /**
      * Get tagID
      *

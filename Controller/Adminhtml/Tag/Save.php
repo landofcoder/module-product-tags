@@ -46,6 +46,11 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             if (empty($data['tag_id'])) {
                 $data['tag_id'] = null;
             }
+            if (!empty($data['identifier'])) {
+                $data['identifier'] = preg_replace('/(#)|(%)|(&)|({)|(})|(!)|(@)|(:)|(;)|(,)|(<)|(>)|(=)/', '', $data['identifier']);
+                $data['identifier'] = str_replace(" ","-",trim($data['identifier']));
+                $data['identifier'] = strtolower($data['identifier']);
+            }
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
             $id = $this->getRequest()->getParam('tag_id');

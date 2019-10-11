@@ -9,12 +9,12 @@ use Magento\Eav\Model\Entity\Attribute\UniqueValidationInterface;
 class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 {
     protected $_tagProductTable = '';
-    
+
     protected function _construct()
     {
         $this->_init('lof_producttags_tag', 'tag_id');
     }
-
+    
     /**
      * Process page data after saving
      *
@@ -69,7 +69,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
         $connection = $this->getConnection();
 
-         /**
+        /**
          * Delete products from tag
          */
         if (!empty($delete)) {
@@ -107,7 +107,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
             foreach ($newPositions as $delta => $productIds) {
                 $bind = ['position' => new \Zend_Db_Expr("position + ({$delta})")];
-                $where = ['tag_id = ?' => (int)$id, 'product_id IN (?)' => $productIds];
+                $where = ['tag_id = ?' => (int)$id, 'product_id IN (?)' => $productIds];    
                 $connection->update($this->getTagProductTable(), $bind, $where);
             }
         }
@@ -125,8 +125,36 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             $tag->setAffectedProductIds($productIds);
         }
 
+        $productCount = $this->getProductCount($tag);
+        $tableName = $this->getTable('lof_producttags_tag'); //gives table name with prefix
+        $connection->update(
+            ['main_table' => $tableName],
+            ['number_products' => (int)$productCount],['tag_id = ?' => (int)$id]);
         return $this;
     }
+    /**
+     * Count product selected on Product Tags
+     */
+    public function getProductCount($tag)
+    {
+        $productTable = $this->getTable('lof_producttags_product');
+
+        $select = $this->getConnection()->select()->from(
+            ['main_table' => $productTable],
+            [new \Zend_Db_Expr('COUNT(main_table.product_id)')]
+        )->where(
+            'main_table.tag_id = :tag_id'
+        );
+
+        $bind = ['tag_id' => (int)$tag->getId()];
+        $counts = $this->getConnection()->fetchOne($select, $bind);
+
+        return intval($counts);
+    }
+
+    /**
+     * Save Tag Store
+     */
     protected function _saveTagStores($tag)
     {
         $oldStores = $this->lookupStoreIds($tag->getId());
@@ -150,9 +178,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         }
         return $this;
     }
-   
 
-    
     /**
      * Perform operations after object load
      *
@@ -164,6 +190,8 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         if ($object->getId()) {
             $stores = $this->lookupStoreIds($object->getId());
             $object->setData('store_id', $stores);
+            // $productCount = $this->getProductCount($object);
+            // print_r($productCount);die();
         }
         return parent::_afterLoad($object);
     }
