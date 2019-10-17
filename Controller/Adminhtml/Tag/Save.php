@@ -4,7 +4,6 @@
  * See COPYING.txt for license details.
  */
 namespace Lof\ProductTags\Controller\Adminhtml\Tag;
-
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Backend\App\Action\Context;
 use Lof\ProductTags\Api\TagRepositoryInterface;
@@ -13,7 +12,6 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\Filter\Date;
-
 /**
  * Save Lof Tag action.
  */
@@ -48,20 +46,33 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             if (empty($data['tag_id'])) {
                 $data['tag_id'] = null;
             }
-
+            if (!empty($data['identifier'])) {
+                $data['identifier'] = preg_replace('/(#)|(%)|(&)|({)|(})|(!)|(@)|(:)|(;)|(,)|(<)|(>)|(=)/', '', $data['identifier']);
+                $data['identifier'] = str_replace(" ","-",trim($data['identifier']));
+                $data['identifier'] = strtolower($data['identifier']);
+            }
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
             $id = $this->getRequest()->getParam('tag_id');
             if ($id) {
                 try {
-                    $model = $this->tagRepository->getById($id);
+                    $model = $model->load($id);
                 } catch (LocalizedException $e) {
                     $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
                     return $resultRedirect->setPath('*/*/');
                 }
             }
-
             $model->setData($data);
+            if (isset($data['tag_products'])
+                && is_string($data['tag_products'])) {
+                $products = json_decode($data['tag_products'], true);
+                $model->setPostedProducts($products);
+            }
+            $this->_eventManager->dispatch(
+                'lof_producttags_prepare_save',
+                ['tag' => $model, 'request' => $this->getRequest()]
+            );
+            $products = $model->getPostedProducts();
             try{
                 $model->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the tag.'));
@@ -72,7 +83,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             } catch (\Exception $e) {
                 $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the tag.'));
             }
-
             $this->dataPersistor->set('lof_productags_tag', $data);
             return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
@@ -81,7 +91,6 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';
-
         if ($redirect ==='continue') {
             $resultRedirect->setPath('*/*/edit', ['tag_id' => $model->getId()]);
         } else if ($redirect === 'close') {

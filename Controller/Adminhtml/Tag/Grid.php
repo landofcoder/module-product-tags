@@ -5,19 +5,16 @@
  * See COPYING.txt for license details.
  */
 namespace Lof\ProductTags\Controller\Adminhtml\Tag;
-
 class Grid extends \Lof\ProductTags\Controller\Adminhtml\Tag
 {
     /**
      * @var \Magento\Framework\Controller\Result\RawFactory
      */
     protected $resultRawFactory;
-
     /**
      * @var \Magento\Framework\View\LayoutFactory
      */
     protected $layoutFactory;
-
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
@@ -32,7 +29,6 @@ class Grid extends \Lof\ProductTags\Controller\Adminhtml\Tag
         $this->resultRawFactory = $resultRawFactory;
         $this->layoutFactory = $layoutFactory;
     }
-
     /**
      * Grid Action
      * Display list of products related to current category
@@ -41,7 +37,7 @@ class Grid extends \Lof\ProductTags\Controller\Adminhtml\Tag
      */
     public function execute()
     {
-        $tag = $this->_initTag(true);
+        $tag = $this->_initTag();
         if (!$tag) {
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();

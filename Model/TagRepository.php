@@ -132,7 +132,7 @@ class TagRepository implements TagRepositoryInterface
         if (!$tagModel->getId()) {
             throw new NoSuchEntityException(__('Tag with id "%1" does not exist.', $tagId));
         }
-        return $tagModel->getData();
+        return $tagModel;
     }
 
     /**

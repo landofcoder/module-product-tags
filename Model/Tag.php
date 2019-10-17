@@ -100,7 +100,7 @@ class Tag extends \Magento\Framework\Model\AbstractModel
     }
 
     public function getRelatedReadonly(){
-        return true;
+        return false;
     }
 
     /**
@@ -125,6 +125,16 @@ class Tag extends \Magento\Framework\Model\AbstractModel
             return $collection;
         }
         return false;
+    }
+
+     /**
+     * Receive page store ids
+     *
+     * @return int[]
+     */
+    public function getStores()
+    {
+        return $this->hasData('stores') ? $this->getData('stores') : (array)$this->getData('store_id');
     }
    
 }
