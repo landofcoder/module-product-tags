@@ -54,37 +54,58 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
             $id = $this->getRequest()->getParam('tag_id');
-            if ($id) {
-                try {
-                    $model = $model->load($id);
-                } catch (LocalizedException $e) {
-                    $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
-                    return $resultRedirect->setPath('*/*/');
-                }
-            }
-            $model->setData($data);
-            if (isset($data['tag_products'])
-                && is_string($data['tag_products'])) {
-                $products = json_decode($data['tag_products'], true);
-                $model->setPostedProducts($products);
-            }
-            $this->_eventManager->dispatch(
-                'lof_producttags_prepare_save',
-                ['tag' => $model, 'request' => $this->getRequest()]
+            $identifier = $this->getRequest()->getParam('identifier');
+            //print_r($identifier);die();
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
+			$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
+			$connection = $resource->getConnection();
+            $tableName = $resource->getTableName('lof_producttags_tag');
+            $select = $connection->select()->from(
+                ['main_table' => $tableName],
+                [new \Zend_Db_Expr('COUNT(main_table.identifier)')]
+            )->where(
+                'main_table.identifier = :identifier'
             );
-            $products = $model->getPostedProducts();
-            try{
-                $model->save($model);
-                $this->messageManager->addSuccessMessage(__('You saved the tag.'));
-                $this->dataPersistor->clear('lof_productags_tag');
-                return $this->processBlockReturn($model, $data, $resultRedirect);
-            } catch (LocalizedException $e) {
-                $this->messageManager->addErrorMessage($e->getMessage());
-            } catch (\Exception $e) {
-                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the tag.'));
+    
+            $bind = ['identifier' => $identifier];
+            $counts = $connection->fetchOne($select, $bind);
+            
+            if($counts > 0){
+                $this->messageManager->addErrorMessage(__('The identifier already exists'));
             }
-            $this->dataPersistor->set('lof_productags_tag', $data);
-            return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
+            else{
+                if ($id) {
+                    try {
+                        $model = $model->load($id);
+                    } catch (LocalizedException $e) {
+                        $this->messageManager->addErrorMessage(__('This tag no longer exists.'));
+                        return $resultRedirect->setPath('*/*/');
+                    }
+                }
+                $model->setData($data);
+                if (isset($data['tag_products'])
+                    && is_string($data['tag_products'])) {
+                    $products = json_decode($data['tag_products'], true);
+                    $model->setPostedProducts($products);
+                }
+                $this->_eventManager->dispatch(
+                    'lof_producttags_prepare_save',
+                    ['tag' => $model, 'request' => $this->getRequest()]
+                );
+                $products = $model->getPostedProducts();
+                try{
+                    $model->save($model);
+                    $this->messageManager->addSuccessMessage(__('You saved the tag.'));
+                    $this->dataPersistor->clear('lof_productags_tag');
+                    return $this->processBlockReturn($model, $data, $resultRedirect);
+                } catch (LocalizedException $e) {
+                    $this->messageManager->addErrorMessage($e->getMessage());
+                } catch (\Exception $e) {
+                    $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the tag.'));
+                }
+                $this->dataPersistor->set('lof_productags_tag', $data);
+                return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
+            }
         }
         return $resultRedirect->setPath('*/*/');
     }
