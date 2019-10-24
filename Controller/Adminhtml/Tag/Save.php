@@ -106,6 +106,7 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
                 $this->dataPersistor->set('lof_productags_tag', $data);
                 return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
             }
+            return $resultRedirect->setPath('*/*/edit', ['tag_id' => $id]);
         }
         return $resultRedirect->setPath('*/*/');
     }
