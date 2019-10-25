@@ -34,6 +34,7 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             ?: \Magento\Framework\App\ObjectManager::getInstance()->get(TagRepositoryInterface::class);
         parent::__construct($context, $date);
     }
+
     public function execute()
     {
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
@@ -53,24 +54,12 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
             }
             /** @var \Lof\ProductTags\Model\Tag $model */
             $model = $this->TagFactory->create();
-            $id = $this->getRequest()->getParam('tag_id');
+            $id = $data['tag_id'];
             $identifier = $this->getRequest()->getParam('identifier');
-            //print_r($identifier);die();
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); // Instance of object manager
-			$resource = $objectManager->get('Magento\Framework\App\ResourceConnection');
-			$connection = $resource->getConnection();
-            $tableName = $resource->getTableName('lof_producttags_tag');
-            $select = $connection->select()->from(
-                ['main_table' => $tableName],
-                [new \Zend_Db_Expr('COUNT(main_table.identifier)')]
-            )->where(
-                'main_table.identifier = :identifier'
-            );
-    
-            $bind = ['identifier' => $identifier];
-            $counts = $connection->fetchOne($select, $bind);
-            
-            if($counts > 0){
+            $store_id = $this->getRequest()->getParam('store_id');
+            $status = $this->getRequest()->getParam('status');
+            $is_exists_identifier = $this->validateTagIdentifier($id, $identifier, $store_id, $status);
+            if($is_exists_identifier){
                 $this->messageManager->addErrorMessage(__('The identifier already exists'));
             }
             else{
@@ -110,6 +99,18 @@ class Save extends \Lof\ProductTags\Controller\Adminhtml\Tag implements HttpPost
         }
         return $resultRedirect->setPath('*/*/');
     }
+
+    protected function validateTagIdentifier($tag_id, $identifier, $store_id, $status){
+        $model = $this->TagFactory->create();
+        $checked_tag_id = $model->checkIdentifier($identifier, $store_id, true);
+        if($checked_tag_id){
+            if(!$tag_id || ($tag_id && ($checked_tag_id != $tag_id))){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private function processBlockReturn($model, $data, $resultRedirect)
     {
         $redirect = $data['back'] ?? 'close';

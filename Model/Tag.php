@@ -136,5 +136,19 @@ class Tag extends \Magento\Framework\Model\AbstractModel
     {
         return $this->hasData('stores') ? $this->getData('stores') : (array)$this->getData('store_id');
     }
+
+    /**
+     * Check if page identifier exist for specific store
+     * return page id if page exists
+     *
+     * @param string $identifier
+     * @param int $storeId
+     * @param bool $isAdmin
+     * @return int
+     */
+    public function checkIdentifier($identifier, $storeId, $isAdmin = false)
+    {
+        return $this->_getResource()->checkIdentifier($identifier, $storeId, $isAdmin);
+    }
    
 }
