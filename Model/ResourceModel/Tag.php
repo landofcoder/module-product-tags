@@ -5,14 +5,131 @@ use Magento\Catalog\Model\Indexer\Category\Product\Processor;
 use Magento\Framework\DataObject;
 use Magento\Framework\EntityManager\EntityManager;
 use Magento\Eav\Model\Entity\Attribute\UniqueValidationInterface;
+use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\DB\Select;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Context;
+use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\EntityManager\MetadataPool;
+use Lof\ProductTags\Api\Data\TagInterface;
 
-class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+class Tag extends AbstractDb
 {
     protected $_tagProductTable = '';
+
+    /**
+     * Store model
+     *
+     * @var null|Store
+     */
+    protected $_store = null;
+
+    /**
+     * Store manager
+     *
+     * @var StoreManagerInterface
+     */
+    protected $_storeManager;
+
+    /**
+     * @var DateTime
+     */
+    protected $dateTime;
+
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var MetadataPool
+     */
+    protected $metadataPool;
+
+    /**
+     * @param Context $context
+     * @param StoreManagerInterface $storeManager
+     * @param DateTime $dateTime
+     * @param EntityManager $entityManager
+     * @param MetadataPool $metadataPool
+     * @param string $connectionName
+     */
+    public function __construct(
+        Context $context,
+        StoreManagerInterface $storeManager,
+        DateTime $dateTime,
+        EntityManager $entityManager,
+        MetadataPool $metadataPool,
+        $connectionName = null
+    ) {
+        parent::__construct($context, $connectionName);
+        $this->_storeManager = $storeManager;
+        $this->dateTime = $dateTime;
+        $this->entityManager = $entityManager;
+        $this->metadataPool = $metadataPool;
+    }
 
     protected function _construct()
     {
         $this->_init('lof_producttags_tag', 'tag_id');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getConnection()
+    {
+        return $this->metadataPool->getMetadata(TagInterface::class)->getEntityConnection();
+    }
+
+
+    /**
+     * Process page data before saving
+     *
+     * @param AbstractModel $object
+     * @return $this
+     * @throws LocalizedException
+     */
+    protected function _beforeSave(AbstractModel $object)
+    {
+        if (!$this->isValidPageIdentifier($object)) {
+            throw new LocalizedException(
+                __(
+                    "The product tags URL key can't use capital letters or disallowed symbols. "
+                    . "Remove the letters and symbols and try again."
+                )
+            );
+        }
+
+        if ($this->isNumericPageIdentifier($object)) {
+            throw new LocalizedException(
+                __("The product tags URL key can't use only numbers. Add letters or words and try again.")
+            );
+        }
+        return parent::_beforeSave($object);
+    }
+
+    /**
+     *  Check whether page identifier is numeric
+     *
+     * @param AbstractModel $object
+     * @return bool
+     */
+    protected function isNumericPageIdentifier(AbstractModel $object)
+    {
+        return preg_match('/^[0-9]+$/', $object->getData('identifier'));
+    }
+
+    /**
+     *  Check whether page identifier is valid
+     *
+     * @param AbstractModel $object
+     * @return bool
+     */
+    protected function isValidPageIdentifier(AbstractModel $object)
+    {
+        return preg_match('/^[a-z0-9][a-z0-9_\/-]+(\.[a-z0-9_-]+)?$/', $object->getData('identifier'));
     }
     
     /**
@@ -166,7 +283,7 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
         $insert = array_diff($newStores, $oldStores);
         $delete = array_diff($oldStores, $newStores);
         if ($delete) {
-            $where = ['tag_id = ?' => (int)$object->getId(), 'store_id IN (?)' => $delete];
+            $where = ['tag_id = ?' => (int)$tag->getId(), 'store_id IN (?)' => $delete];
             $this->getConnection()->delete($table, $where);
         }
         if ($insert) {
@@ -248,14 +365,12 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
         return $this->getConnection()->fetchPairs($select, $bind);
     }
+
     public function getTagIdByIdentifier($tag_code = ""){
         if($tag_code) {
             $tag_code = str_replace(array('"',"'"),"", $tag_code);
             $tag_code = trim($tag_code);
-            $select = $this->getConnection()->select()->from(
-                $this->getTable("lof_producttags_tag"),
-                ['tag_id']
-            )->where(
+            $select = $this->getConnection()->select()->from($this->getMainTable(), 'tag_id')->where(
                 "{$this->getTable('lof_producttags_tag')}.identifier = ?",
                 $tag_code
             );
@@ -263,5 +378,62 @@ class Tag extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
             return $this->getConnection()->fetchOne($select);
         }
         return false;
+    }
+
+    /**
+     * Check if page identifier exist for specific store
+     * return page id if page exists
+     *
+     * @param string $identifier
+     * @param int $storeId
+     * @param bool $isAdmin
+     * @return int
+     */
+    public function checkIdentifier($identifier, $storeId, $isAdmin = false)
+    {
+        $entityMetadata = $this->metadataPool->getMetadata(TagInterface::class);
+
+        if($isAdmin) {
+            $stores = [$storeId];
+        } else{
+            $stores = [Store::DEFAULT_STORE_ID, $storeId];
+        }
+        $select = $this->_getLoadByIdentifierSelect($identifier, $stores, 1);
+        $select->reset(Select::COLUMNS)
+            ->columns('cp.'.$entityMetadata->getIdentifierField())
+            ->order('cps.store_id DESC')
+            ->limit(1);
+
+        return $this->getConnection()->fetchOne($select);
+    }
+
+    /**
+     * Retrieve load select with filter by identifier, store and activity
+     *
+     * @param string $identifier
+     * @param int|array $store
+     * @param int $isActive
+     * @return Select
+     */
+    protected function _getLoadByIdentifierSelect($identifier, $store, $isActive = null)
+    {
+        $entityMetadata = $this->metadataPool->getMetadata(TagInterface::class);
+        $linkField = $entityMetadata->getLinkField();
+
+        $select = $this->getConnection()->select()
+            ->from(['cp' => $this->getMainTable()])
+            ->join(
+                ['cps' => $this->getTable('lof_producttags_store')],
+                'cp.' . $linkField . ' = cps.' . $linkField,
+                []
+            )
+            ->where('cp.identifier = ?', $identifier)
+            ->where('cps.store_id IN (?)', $store);
+
+        if ($isActive !== null) {
+            $select->where('cp.status = ?', $isActive);
+        }
+
+        return $select;
     }
 }
