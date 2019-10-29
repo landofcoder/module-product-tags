@@ -14,6 +14,9 @@ use Magento\Framework\Api\ExtensibleDataInterface;
  */
 interface TagProductLinkInterface extends ExtensibleDataInterface
 {
+    const KEY_SKU = 'sku';
+    const KEY_POSITION = 'position';
+    const KEY_TAG_ID = 'tag_id';
     /**
      * @return string|null
      */

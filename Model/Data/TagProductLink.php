@@ -15,9 +15,7 @@ class TagProductLink extends \Magento\Framework\Api\AbstractExtensibleObject imp
     /**#@+
      * Constant for confirmation status
      */
-    const KEY_SKU = 'sku';
-    const KEY_POSITION = 'position';
-    const KEY_TAG_ID = 'tag_id';
+    
     /**#@-*/
 
     /**
