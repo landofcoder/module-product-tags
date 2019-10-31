@@ -115,7 +115,7 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
      * @return int|null
      */
     public function getStoreId(){
-        return $this->_get("store_id");
+        return $this->_get(self::STORE_ID);
     }
     /**
      * Set storeId
@@ -124,7 +124,7 @@ class Tag extends \Magento\Framework\Api\AbstractExtensibleObject implements Tag
      * @return $this
      */
     public function setStoreId($storeId){
-        return $this->setData("store_id", $storeId);
+        return $this->setData(self::STORE_ID, $storeId);
     }
     /**
      * Set products
