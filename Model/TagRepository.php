@@ -58,6 +58,8 @@ class TagRepository implements TagRepositoryInterface
 
     private $collectionProcessor;
 
+    protected $_resource;
+
 
     /**
      * @param ResourceTag $resource
@@ -79,9 +81,11 @@ class TagRepository implements TagRepositoryInterface
         DataObjectHelper $dataObjectHelper,
         DataObjectProcessor $dataObjectProcessor,
         StoreManagerInterface $storeManager,
-        CollectionProcessorInterface $collectionProcessor
+        CollectionProcessorInterface $collectionProcessor,
+        \Magento\Framework\App\ResourceConnection $Resource
     ) {
         $this->resource = $resource;
+        $this->_resource = $Resource;
         $this->tagFactory = $tagFactory;
         $this->tagCollectionFactory = $tagCollectionFactory;
         $this->searchResultsFactory = $searchResultsFactory;
@@ -198,5 +202,23 @@ class TagRepository implements TagRepositoryInterface
             throw new NoSuchEntityException(__('Tag with identifier "%1" does not exist.', $tagCode));
         }
         return $tagModel->getDataModel();
+    }
+    public function getListTag($args){
+        $tagModel = $this->tagFactory->create();
+        $collection = $tagModel->getCollection();
+        $collection->addFieldToSelect('*');
+        if(isset($args['tag_id']) && $args['tag_id']){
+            $collection->addFieldToFilter('tag_id', array('eq' => (int)$args['tag_id']));
+        }
+        if(isset($args['identifiers']) && $args['identifiers']){
+            $collection->addFieldToFilter('identifier', array('like' => "%{$args['identifiers']}%"));
+        }
+        if(isset($args['tag_title']) && $args['tag_title']){
+            $collection->addFieldToFilter('tag_title', array('like' => "%{$args['tag_title']}%"));
+        }
+        if(isset($args['status']) && $args['status']){
+            $collection->addFieldToFilter('status', array('eq' => $args['status']));
+        }
+        return $collection;
     }
 }

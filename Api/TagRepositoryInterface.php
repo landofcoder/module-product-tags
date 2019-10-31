@@ -62,4 +62,11 @@ interface TagRepositoryInterface
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function deleteById($tagId);
+    /**
+     * Retrieve Tag
+     * @param string $tagId
+     * @return \Lof\ProductTags\Api\Data\TagInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getListTag($tagId);
 }
