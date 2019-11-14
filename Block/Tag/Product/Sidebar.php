@@ -48,7 +48,11 @@ class Sidebar extends \Magento\Framework\View\Element\Template
     public function _toHtml(){
         if(!$this->_tagHelper->getGeneralConfig('enabled')) return;
         if(!$this->_tagHelper->getGeneralConfig('enable_tag_sidebar')) return;
-        return parent::_toHtml();
+        $_tag_collection = $this->getTagCollection();
+        if($_tag_collection && $_tag_collection->getSize()){
+            return parent::_toHtml();
+        }
+        return "";
     }
     function getTagHelper(){
         return $this->_tagHelper;

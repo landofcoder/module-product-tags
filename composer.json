@@ -3,6 +3,7 @@
     "description": "Assign one or multiple tags to your products and improve the navigation for your customers, who can narrow the search results by tags in the Product Filters or, vice versa, see all products with the tags",
     "type": "magento2-module",
     "license": "MIT",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "Landofcoder",
