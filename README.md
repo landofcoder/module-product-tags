@@ -1,5 +1,5 @@
 # magento-2-product-tags
-## Magento 2 Product Tags Extension FREE
+## [Magento 2 Product Tags Extension FREE](https://landofcoder.com/magento-2-product-tags.html/)
 
 ![ Product Tags for Magento 2 free download](https://landofcoder.com/media/resized/1170x600/wysiwyg/Magento-2-product-tags/Magento-2-product-tags-free.png)
 
@@ -15,7 +15,7 @@ Narrowing the search results by tags in product filters, Product Tags in Magento
 
 ![Magento 2 Product Tags Add multiple tags](https://landofcoder.com/media/resized/650x500/wysiwyg/Magento-2-product-tags/Free-ship-tags.png)
 
-Magento 2 product tags from Landofcoder allows admin to inform customers of products' special conditions, features or characteristic in any way you wish by tags.
+Magento 2 product tags from [Landofcoder](https://landofcoder.com/) allows admin to inform customers of products' special conditions, features or characteristic in any way you wish by tags.
 For example, you could make your products more attractive with tags
 
 - [x] Free shipping fee
@@ -43,7 +43,7 @@ Make sure the product tag content is remarkably helpful for clients and they gra
 
 ![ View product tags on side bar](https://landofcoder.com/media/resized/650x500/wysiwyg/Magento-2-product-tags/Magento-2-product-tags-in-the-sidebar.png)
 
-Due to Magento 2 Product Tags FREE, admin can boost sale up by suggesting customers the similar products matched with desired features by various product tags. Therefor, shoppers can find corresponded search results effortlessly.
+Due to [Magento 2 Product Tags FREE](https://landofcoder.com/magento-2-product-tags.html/), admin can boost sale up by suggesting customers the similar products matched with desired features by various product tags. Therefor, shoppers can find corresponded search results effortlessly.
 
 5. **Front-end controller to view a page of filter products by tag**
 
