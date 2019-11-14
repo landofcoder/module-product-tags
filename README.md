@@ -1,6 +1,7 @@
 # magento2-product-tags
 ###### Magento 2 Product Tags Extension FREE
-![GitHub Logo](https://landofcoder.com/media/catalog/product/m/a/magento-2-product-tags-free-ava_1.png)
+![Magento 2 Product Tags Extension FREE](https://landofcoder.com/media/catalog/product/m/a/magento-2-product-tags-free-cover_1.png)
+
 
 **Magento 2 Product Tags extension Free** supports all users and admins in adding one or more tags ( keywords or phrases) to determine prducts and their features, improve navigation for customers and save time to search for a desired product.
 
