@@ -16,7 +16,7 @@ Narrowing the search results by tags in product filters, Product Tags in Magento
 ![Magento 2 Product Tags Add multiple tags](https://landofcoder.com/media/resized/650x500/wysiwyg/Magento-2-product-tags/Free-ship-tags.png)
 
 Magento 2 product tags from Landofcoder allows admin to inform customers of products' special conditions, features or characteristic in any way you wish by tags.
-For example, you could make your products more attractive with tags:
+For example, you could make your products more attractive with tags
 
 - [x] Free shipping fee
 - [x] Free gift item
