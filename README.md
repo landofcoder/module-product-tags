@@ -1,6 +1,8 @@
 # magento-2-product-tags
 ## [Magento 2 Product Tags Extension FREE](https://landofcoder.com/magento-2-product-tags.html/)
 
+![Landofcoder Black Friday Sale Upto 50%](https://landofcoder.com/media/wysiwyg/slideshow/black-friday-2019.png)
+
 ![ Product Tags for Magento 2 free download](https://landofcoder.com/media/resized/1170x600/wysiwyg/Magento-2-product-tags/Magento-2-product-tags-free.png)
 
 ![Magento 2 Product Tags Extension FREE](https://landofcoder.com/media/catalog/product/m/a/magento-2-product-tags-free-cover_1.png)
