@@ -127,7 +127,7 @@
 		<column name="number_products">
 			<settings>
 				<filter>text</filter>
-				<label translate="true">number of products</label>
+				<label translate="true">Number of products</label>
 			</settings>
 		</column>
 		<column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
