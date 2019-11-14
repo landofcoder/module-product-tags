@@ -1,6 +1,8 @@
 # magento2-product-tags
-###### What is this extension about?
-Assign one or multiple tags to your products and improve the navigation for your customers, who can narrow the search results by tags in the Product Filters or, vice versa, see all products with the tags.
+###### Magento 2 Product Tags Extension FREE
+Magento 2 Product Tags extension Free supports all users and admins in adding one or more tags ( keywords or phrases) to determine prducts and their features, improve navigation for customers and save time to search for a desired product.
+
+Narrowing the search results by tags in product filters, Product Tags in Magento 2 gives shoppers another way to filter products based on their personal preferences.
 
 ###### Install Extension
 ```
