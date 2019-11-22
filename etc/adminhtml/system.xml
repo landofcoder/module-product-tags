@@ -21,9 +21,11 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-
-                <field id="show_number_products" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                
+                <field id="show_number_products" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Show number products beside tags</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>show/hide Show number products beside tags.</comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
