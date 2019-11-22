@@ -1,3 +1,32 @@
-<?php if($block->getData('title')): ?>
-	<h2 class='title'><?php echo $block->getData('title'); ?></h2>
-<?php endif; ?>
+<?php 
+/**
+ * @var $block \Lof\ProductTags\Block\Tag\Product\ListProduct
+ */
+?>
+<?php
+$tags = $this->getTagCollection();
+$title = $block->getData('title');
+$show_number_products = $block->getData('show_number_products');
+$show_number_products = $show_number_products?(int)$show_number_products:0;
+if($tags && $tags->getSize()){
+	?>
+	<div class="block block-tags block-product-tags">
+	<?php if($title) { ?><div class="block-title"><h2><?php echo $title; ?></h2></div><?php } ?>
+		<div class="block-content">
+			<ul class="list-tags list-product-tags">
+				<?php foreach($tags as $tag): ?>
+				<li><a href="<?php echo $this->getTagHelper()->getTagUrl($tag->getIdentifier()); ?>">
+                <?php 
+					echo $tag->getTagTitle();
+					if($show_number_products){
+						echo " (".$tag->getNumberProducts().")";
+					}
+				?></a>
+				</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+	<?php
+}
+?>

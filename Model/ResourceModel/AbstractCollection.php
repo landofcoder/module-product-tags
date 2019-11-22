@@ -59,6 +59,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
     protected function performAfterLoad($tableName, $linkField)
     {
         $linkedIds = $this->getColumnValues($linkField);
+
         if (count($linkedIds)) {
             $connection = $this->getConnection();
             $select = $connection->select()->from(['product_tag_store' => $this->getTable($tableName)])

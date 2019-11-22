@@ -23,12 +23,19 @@
 
 namespace Lof\ProductTags\Block\Widget;
 
-use Magento\Framework\View\Element\Template;
+use Lof\ProductTags\Block\AbstractWidget;
 use Magento\Widget\Block\BlockInterface;
 
-class LofproductTags extends Template implements BlockInterface
+class LofproductTags extends AbstractWidget implements BlockInterface
 {
 
     protected $_template = "widget/lofproducttags.phtml";
 
+    public function _toHtml(){
+        $_tag_collection = $this->getTagCollection();
+        if($_tag_collection && $_tag_collection->getSize()){
+            return parent::_toHtml();
+        }
+    }
+    
 }

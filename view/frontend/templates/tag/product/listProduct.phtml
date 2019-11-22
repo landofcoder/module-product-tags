@@ -6,26 +6,21 @@
 <?php
 $tags = $this->getTagCollection();
 $title = $this->getTagHelper()->getGeneralConfig("tag_sidebar_title");
+$show_number_products = $this->getTagHelper()->getGeneralConfig("show_number_products");
+$show_number_products = $show_number_products?(int)$show_number_products:0;
 if($tags && $tags->getSize()){
 	?>
 	<div class="block block-tags block-product-tags">
-		<div class="block-title"><h2><?php echo $title; ?></h2></div>
+	<?php if($title) { ?><div class="block-title"><h2><?php echo $title; ?></h2></div><?php } ?>
 		<div class="block-content">
-			<ul style="padding: 0px;" class="list-tags">
+			<ul class="list-tags  list-product-tags">
 				<?php foreach($tags as $tag): ?>
-				<li style="list-style-type: none; float: left; margin:5px 10px; border: 1px solid #000000; border-radius: 5px; padding: 5px;"><a href="<?php
-				echo $this->getTagHelper()->getTagUrl($tag->getIdentifier()); ?>">
-				<style>
-                    li:hover{
-                        background-color: #e4e4e4;
-                    }
-                    a:hover{
-                        color: black;
-                        text-decoration: none;
-                    }
-                </style>
+				<li><a href="<?php echo $this->getTagHelper()->getTagUrl($tag->getIdentifier()); ?>">
                 <?php 
-					echo $tag->getTagTitle(); 
+					echo $tag->getTagTitle();
+					if($show_number_products){
+						echo " (".$tag->getNumberProducts().")";
+					}
 				?>
                 </a>
 				</li>

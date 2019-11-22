@@ -22,29 +22,10 @@
  */
 
 namespace Lof\ProductTags\Block\Tag\Product;
+use Lof\ProductTags\Block\AbstractWidget;
 
-class Sidebar extends \Magento\Framework\View\Element\Template
+class Sidebar extends AbstractWidget
 {
-    protected $resultPageFactory;
-
-    protected $_tagFactory;
-
-    protected $_tagcollection;
-
-    protected $_tagHelper;
-
-    public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Lof\ProductTags\Model\TagFactory $tagFactory,
-        \Lof\ProductTags\Helper\Data $tagdata,
-        array $data = []
-    ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->_tagFactory = $tagFactory;
-        $this->_tagHelper = $tagdata;
-        parent::__construct($context, $data);
-    }
     public function _toHtml(){
         if(!$this->_tagHelper->getGeneralConfig('enabled')) return;
         if(!$this->_tagHelper->getGeneralConfig('enable_tag_sidebar')) return;
@@ -54,22 +35,5 @@ class Sidebar extends \Magento\Framework\View\Element\Template
         }
         return "";
     }
-    function getTagHelper(){
-        return $this->_tagHelper;
-    }
-    public function getTagCollection()
-    {
-        if(!$this->_tagcollection){
-            $limit = $this->_tagHelper->getGeneralConfig('number_tags_sidebar');
-            $limit = $limit?(int)$limit:10;
-            $tag = $this->_tagFactory->create();
-            $collection = $tag->getCollection();
-            $collection->addFieldToFilter("status", 1);
-            $collection->setOrder("tag_id","DESC");
-            $collection->setPageSize($limit);
-            //$collection->setLimit($limit);
-            $this->_tagcollection = $collection;
-        }
-        return $this->_tagcollection;
-    }
+
 }

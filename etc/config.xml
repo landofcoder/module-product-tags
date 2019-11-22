@@ -6,6 +6,7 @@
 				<enabled>1</enabled>
 				<route>tags</route>
 				<enable_tag_on_product>1</enable_tag_on_product>
+				<show_number_products>1</show_number_products>
 				<product_tag_title>Trending</product_tag_title>
 				<number_tags>10</number_tags>
 				<enable_tag_sidebar>1</enable_tag_sidebar>

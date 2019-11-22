@@ -6,7 +6,7 @@
                 <item name="producttags" xsi:type="array">
                     <item name="class" xsi:type="string">Lof\ProductTags\Controller\Router</item>
                     <item name="disable" xsi:type="boolean">false</item>
-                    <item name="sortOrder" xsi:type="string">50</item>
+                    <item name="sortOrder" xsi:type="string">60</item>
                 </item>
             </argument>
         </arguments>
