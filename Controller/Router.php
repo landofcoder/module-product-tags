@@ -27,7 +27,9 @@ class Router implements \Magento\Framework\App\RouterInterface
    }
    public function match(\Magento\Framework\App\RequestInterface $request)
    {
+       die("Awetae");
         if (!$this->dispatched) {
+            
             $identifier = trim($request->getPathInfo(), '/');
             $origUrlKey = $identifier;
             $condition = new DataObject(['url_key' => $identifier, 'continue' => true]);
@@ -35,6 +37,7 @@ class Router implements \Magento\Framework\App\RouterInterface
                 'lof_producttags_controller_router_match_before',
                 ['router' => $this, 'condition' => $condition]
                 );
+
             $urlKey = $condition->getUrlKey();
             if ($condition->getRedirectUrl()) {
                 $this->response->setRedirect($condition->getRedirectUrl());
@@ -74,6 +77,12 @@ class Router implements \Magento\Framework\App\RouterInterface
                     
                 }
             }
+            $request->setDispatched(true);
+            $this->dispatched = true;
+            return $this->actionFactory->create(
+                'Magento\Framework\App\Action\Forward',
+                ['request' => $request]
+                );
         }
    }
 } 

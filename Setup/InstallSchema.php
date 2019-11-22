@@ -115,17 +115,18 @@ class InstallSchema implements InstallSchemaInterface
                 ->setComment('Product Tags Table')
                 ->setOption('type', 'InnoDB')
                 ->setOption('charset', 'utf8');
-            $installer->getConnection()->createTable($table);
-            $installer->getConnection()->addIndex(
-				$installer->getTable('lof_producttags_tag'),
-				$setup->getIdxName(
-					$installer->getTable('lof_producttags_tag'),
-					['tag_title','identifier','tag_description'],
-					\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-				),
-				['tag_title','identifier','tag_description'],
-				\Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
-			);
+
+                $installer->getConnection()->createTable($table);
+                $installer->getConnection()->addIndex(
+                    $installer->getTable('lof_producttags_tag'),
+                    $setup->getIdxName(
+                        $installer->getTable('lof_producttags_tag'),
+                        ['tag_title','identifier','tag_description'],
+                        \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
+                    ),
+                    ['tag_title','identifier','tag_description'],
+                    \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
+                );
         }
         //Create lof_producttags_product table
         if (!$installer->tableExists('lof_producttags_product')) {
@@ -137,10 +138,8 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => false,
                         'unsigned' => true,
-                        'nullable' => false,
-                        'foreign' => true
+                        'nullable' => false
                     ],
                     'Tag ID'
                 )
@@ -149,10 +148,9 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => true,
                         'unsigned' => true,
                         'nullable' => false,
-                        'primary' => true
+                        'default' => '0'
                     ],
                     'Product ID'
                 )
@@ -178,10 +176,8 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => false,
                         'unsigned' => true,
-                        'nullable' => false,
-                        'foreign' => true
+                        'nullable' => false
                     ],
                     'Tag ID'
                 )
@@ -190,10 +186,9 @@ class InstallSchema implements InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     [
-                        'identity' => true,
                         'unsigned' => true,
                         'nullable' => false,
-                        'primary' => true
+                        'default' => '0'
                     ],
                     'Store ID'
                 )
