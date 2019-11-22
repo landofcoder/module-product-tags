@@ -21,8 +21,16 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+
+                <field id="show_number_products" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show number products beside tags</label>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                
                 <field id="enable_tag_on_product" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enable tags block</label>
+                    <label>Enable tags block on Product Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>show/hide product tags on product detail page.</comment>
                     <depends>
@@ -45,7 +53,7 @@
                 </field>
 
                 <field id="enable_tag_sidebar" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Enable tag block on sidebar</label>
+                    <label>Enable tag block on Sidebar</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>show/hide product tags on sidebar position.</comment>
                     <depends>
@@ -60,12 +68,13 @@
                     </depends>
                 </field>
                 <field id="number_tags_sidebar" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Limit tags to show on sidebar</label>
+                    <label>Limit tags to show on Sidebar</label>
                     <depends>
                         <field id="enabled">1</field>
                         <field id="enable_tag_sidebar">1</field>
                     </depends>
                 </field>
+                
 			</group>
 		</section>
 	</system>

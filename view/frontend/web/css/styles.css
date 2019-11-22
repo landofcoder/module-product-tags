@@ -1,0 +1,9 @@
+.list-product-tags{padding: 0px;}
+.list-product-tags li{ list-style-type: none; float: left; margin:5px 10px; border: 1px solid #000000; border-radius: 5px; padding: 5px;}
+.list-product-tags li:hover{
+    background-color: #e4e4e4;
+}
+.list-product-tags a:hover{
+    color: black;
+    text-decoration: none;
+}
