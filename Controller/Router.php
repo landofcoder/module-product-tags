@@ -27,7 +27,6 @@ class Router implements \Magento\Framework\App\RouterInterface
    }
    public function match(\Magento\Framework\App\RequestInterface $request)
    {
-       die("Awetae");
         if (!$this->dispatched) {
             
             $identifier = trim($request->getPathInfo(), '/');

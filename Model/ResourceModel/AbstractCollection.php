@@ -142,6 +142,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
 
         $this->addFilter('store', ['in' => $store], 'public');
     }
+    
 
     /**
      * Join store relation table if there is store filter
@@ -157,12 +158,29 @@ abstract class AbstractCollection extends \Magento\Framework\Model\ResourceModel
                 ['store_table' => $this->getTable($tableName)],
                 'main_table.' . $linkField . ' = store_table.' . $linkField,
                 []
-            )->group(
+            )->where('')->group(
                 'main_table.' . $linkField
             );
         }
+        
         parent::_renderFiltersBefore();
     }
+
+
+    public function addProductToFilter($product_id = 0){
+        if($product_id) {
+            $this->getSelect()->join(
+                ['product_table' => $this->getTable('lof_producttags_product')],
+                'main_table.tag_id = product_table.tag_id',
+                []
+            )->where('product_table.product_id = ?', (int)$product_id)->group(
+                'main_table.tag_id'
+            );
+        }
+        return $this;
+    }
+
+    
 
     /**
      * Get SQL for get record count
