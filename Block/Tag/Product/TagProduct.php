@@ -23,6 +23,10 @@
 
 namespace Lof\ProductTags\Block\Tag\Product;
 
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Registry;
+use Magento\Framework\Exception\LocalizedException;
+
 class TagProduct extends \Magento\Framework\View\Element\Template
 {
     protected $resultPageFactory;
@@ -33,16 +37,28 @@ class TagProduct extends \Magento\Framework\View\Element\Template
 
     protected $_tagHelper;
 
+    /**
+     * @var Registry
+     */
+    protected $registry;
+
+    /**
+     * @var Product
+     */
+    private $product;
+
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Lof\ProductTags\Model\TagFactory $tagFactory,
         \Lof\ProductTags\Helper\Data $tagdata,
+        Registry $registry,
         array $data = []
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->_tagFactory = $tagFactory;
         $this->_tagHelper = $tagdata;
+        $this->registry = $registry;
         parent::__construct($context, $data);
     }
     public function _toHtml(){
@@ -54,21 +70,43 @@ class TagProduct extends \Magento\Framework\View\Element\Template
         }
         return "";
     }
+
+    /**
+     * @return Product
+     */
+    private function getProduct()
+    {
+        if (is_null($this->product)) {
+            $this->product = $this->registry->registry('product');
+
+            if (!$this->product->getId()) {
+                throw new LocalizedException(__('Failed to initialize product'));
+            }
+        }
+
+        return $this->product;
+    }
+
     function getTagHelper(){
         return $this->_tagHelper;
     }
     public function getTagCollection()
     {
         if(!$this->_tagcollection){
-            $limit = $this->_tagHelper->getGeneralConfig('number_tags');
-            $limit = $limit?(int)$limit:10;
-            $tag = $this->_tagFactory->create();
-            $collection = $tag->getCollection();
-            $collection->addFieldToFilter("status", 1);
-            $collection->setOrder("tag_id","DESC");
-            $collection->setPageSize($limit);
-            //$collection->setLimit($limit);
-            $this->_tagcollection = $collection;
+            $product = $this->getProduct();
+            $product_id = $product->getId();
+            if($product_id){
+                $limit = $this->_tagHelper->getGeneralConfig('number_tags');
+                $limit = $limit?(int)$limit:10;
+                $tag = $this->_tagFactory->create();
+                $collection = $tag->getCollection();
+                $collection->addFieldToFilter("status", 1);
+                $collection->addProductToFilter($product_id);
+                $collection->setOrder("tag_id","DESC");
+                $collection->setPageSize($limit);
+                //$collection->setLimit($limit);
+                $this->_tagcollection = $collection;
+            }
         }
         return $this->_tagcollection;
     }
