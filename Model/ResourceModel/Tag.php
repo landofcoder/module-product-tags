@@ -139,11 +139,11 @@ class Tag extends AbstractDb
      * @return $this
      * @throws LocalizedException
      */
-    protected function _afterSave($tag)
+    protected function _afterSave(AbstractModel $object)
     {
-        $this->_saveTagProducts($tag);
-        $this->_saveTagStores($tag);
-        return parent::_afterSave($tag);
+        $this->_saveTagProducts($object);
+        $this->_saveTagStores($object);
+        return parent::_afterSave($object);
     }
 
      public function getTagProductTable()
