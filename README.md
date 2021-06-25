@@ -1,5 +1,5 @@
 # magento-2-product-tags
-## [Magento 2 Product Tags Extension FREE](https://landofcoder.com/magento-2-product-tags.html/)
+## Magento 2 Product Tags Extension FREE
 
 
 ![ Product Tags for Magento 2 free download](https://landofcoder.com/media/resized/1170x600/wysiwyg/Magento-2-product-tags/Magento-2-product-tags-free.png)
@@ -16,7 +16,7 @@ Narrowing the search results by tags in product filters, Product Tags in Magento
 
 ![Magento 2 Product Tags Add multiple tags](https://landofcoder.com/media/resized/650x500/wysiwyg/Magento-2-product-tags/Free-ship-tags.png)
 
-Magento 2 product tags from [Landofcoder](https://landofcoder.com/) allows admin to inform customers of products' special conditions, features or characteristic in any way you wish by tags.
+Magento 2 product tags from Landofcoder allows admin to inform customers of products' special conditions, features or characteristic in any way you wish by tags.
 For example, you could make your products more attractive with tags
 
 - [x] Free shipping fee
@@ -44,7 +44,7 @@ Make sure the product tag content is remarkably helpful for clients and they gra
 
 ![ View product tags on side bar](https://landofcoder.com/media/resized/650x500/wysiwyg/Magento-2-product-tags/Magento-2-product-tags-in-the-sidebar.png)
 
-Due to [Magento 2 Product Tags FREE](https://landofcoder.com/magento-2-product-tags.html/), admin can boost sale up by suggesting customers the similar products matched with desired features by various product tags. Therefor, shoppers can find corresponded search results effortlessly.
+Due to Magento 2 Product Tags FREE, admin can boost sale up by suggesting customers the similar products matched with desired features by various product tags. Therefor, shoppers can find corresponded search results effortlessly.
 
 5. **Front-end controller to view a page of filter products by tag**
 
@@ -117,43 +117,5 @@ If this project help you reduce time to develop, you can give me a cup of coffee
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/allorderdesk)
 
-
-**Our Magento 2 Extensions List**
-* [Megamenu for Magento 2](https://landofcoder.com/magento-2-mega-menu-pro.html/)
-
-* [Page Builder for Magento 2](https://landofcoder.com/magento-2-page-builder.html/)
-
-* [Magento 2 Marketplace - Multi Vendor Extension](https://landofcoder.com/magento-2-marketplace-extension.html/)
-
-* [Magento 2 Multi Vendor Mobile App Builder](https://landofcoder.com/magento-2-multi-vendor-mobile-app.html/)
-
-* [Magento 2 Form Builder](https://landofcoder.com/magento-2-form-builder.html/)
-
-* [Magento 2 Reward Points](https://landofcoder.com/magento-2-reward-points.html/)
-
-* [Magento 2 Flash Sales - Private Sales](https://landofcoder.com/magento-2-flash-sale.html)
-
-* [Magento 2 B2B Packages](https://landofcoder.com/magento-2-b2b-extension-package.html)
-
-* [Magento 2 One Step Checkout](https://landofcoder.com/magento-2-one-step-checkout.html/)
-
-* [Magento 2 Customer Membership](https://landofcoder.com/magento-2-membership-extension.html/)
-
-* [Magento 2 Checkout Success Page](https://landofcoder.com/magento-2-checkout-success-page.html/)
-
-
-**Featured Magento Services**
-
-* [Customization Service](https://landofcoder.com/magento-2-create-online-store/)
-
-* [Magento 2 Support Ticket Service](https://landofcoder.com/magento-support-ticket.html/)
-
-* [Magento 2 Multi Vendor Development](https://landofcoder.com/magento-2-create-marketplace/)
-
-* [Magento Website Maintenance Service](https://landofcoder.com/magento-2-customization-service/)
-
-* [Magento Professional Installation Service](https://landofcoder.com/magento-2-installation-service.html)
-
-* [Customization Service](https://landofcoder.com/magento-customization-service.html)
 
 
