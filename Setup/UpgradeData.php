@@ -26,10 +26,26 @@ namespace Lof\ProductTags\Setup;
 use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Eav\Setup\EavSetupFactory;
 
 class UpgradeData implements UpgradeDataInterface
 {
+    /**
+	 * eavSetupFactory
+	 *
+	 * @var EavSetupFactory
+	 */
+	private $eavSetupFactory;
 
+	/**
+	 * @param EavSetupFactory $eavSetupFactory 
+	 */
+	public function __construct(
+		EavSetupFactory $eavSetupFactory
+		)
+	{
+		$this->eavSetupFactory = $eavSetupFactory;
+	}
     /**
      * {@inheritdoc}
      */
@@ -37,8 +53,38 @@ class UpgradeData implements UpgradeDataInterface
         ModuleDataSetupInterface $setup,
         ModuleContextInterface $context
     ) {
-        if (version_compare($context->getVersion(), "1.0.0", "<")) {
+        if (version_compare($context->getVersion(), "1.0.4", "<")) {
             //Your upgrade script
+            $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+            $data = [
+                'group' => 'General',
+                'label' => 'Product Tags',
+                'type' => 'text',
+                'input' => 'text',
+                'position' => 7,
+                'visible' => true,
+                'default' => '',
+                'required' => false,
+                'user_defined' => false,
+                'visible_on_front' => true,
+                'unique' => false,
+                'backend' => 'Lof\ProductTags\Model\Product\Attribute\Backend\ProductTags',
+                'is_global' => \Magento\Catalog\Model\ResourceModel\Eav\Attribute::SCOPE_STORE,
+                'is_configurable' => true,
+                'used_for_promo_rules' => true,
+                'is_searchable' => false,
+                'is_used_in_grid' => false,
+                'is_comparable' => false,
+                'is_filterable_in_grid' => false,
+                'is_visible_on_front' => true,
+                'used_for_sort_by' => false,
+                'used_in_product_listing' => true
+            ];
+   
+            $eavSetup->addAttribute(
+                \Magento\Catalog\Model\Product::ENTITY,
+                'product_tags',
+                $data);
         }
     }
 }
