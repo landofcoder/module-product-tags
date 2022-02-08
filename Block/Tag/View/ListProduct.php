@@ -107,12 +107,12 @@ class ListProduct extends \Magento\Catalog\Block\Product\ListProduct
                 $layer->setCurrentTag($tag);
                 $tag_id = $tag->getId();
             }
-            $products = $tag->getProductsPosition();
-            asort($products);
-            $productIds = [];
-            foreach ($products as $product_id => $position) {
-                $productIds[] = (int)$product_id;
-            }
+            // $products = $tag->getProductsPosition();
+            // asort($products);
+            // $productIds = [];
+            // foreach ($products as $product_id => $position) {
+            //     $productIds[] = (int)$product_id;
+            // }
             $collection = $this->_productCollectionFactory->create();
             $collection
                 ->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
@@ -139,7 +139,7 @@ class ListProduct extends \Magento\Catalog\Block\Product\ListProduct
             //     ->group(
             //         'e.entity_id'
             //     );
-            
+
             $this->_productCollection = $collection;
         }
         return $this->_productCollection;
