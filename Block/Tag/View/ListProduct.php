@@ -1,17 +1,17 @@
 <?php
 /**
  * Copyright (c) 2019  Landofcoder
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -93,13 +93,19 @@ class ListProduct extends \Magento\Catalog\Block\Product\ListProduct
         $this->urlHelper = $urlHelper;
         parent::__construct($context,$postDataHelper,$layerResolver,$categoryRepository,$urlHelper);
     }
+
+    /**
+     * @inheritdoc
+     */
     protected function _getProductCollection()
     {
         if ($this->_productCollection === null) {
             $layer = $this->getLayer();
             $tag = $this->_coreRegistry->registry('current_tag');
-            if($tag){
+            $tag_id = 0;
+            if ($tag) {
                 $layer->setCurrentTag($tag);
+                $tag_id = $tag->getId();
             }
             $products = $tag->getProductsPosition();
             asort($products);
@@ -108,9 +114,225 @@ class ListProduct extends \Magento\Catalog\Block\Product\ListProduct
                 $productIds[] = (int)$product_id;
             }
             $collection = $this->_productCollectionFactory->create();
-            $collection->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())->addAttributeToSelect('*')->addAttributeToFilter('entity_id',['in'=>$productIds]);
+            $collection
+                ->setVisibility($this->_catalogProductVisibility->getVisibleInCatalogIds())
+                ->addAttributeToSelect('*')
+                ->joinField(
+                    'position',
+                    'lof_producttags_product',
+                    'position',
+                    'product_id=entity_id',
+                    'tag_id=' . (int)$tag_id,
+                    'inner'
+                );;
+
+            // $collection->getSelect()
+            //     ->join(
+            //         ['t' => $collection->getResource()->getTable("lof_producttags_product")],
+            //         'e.entity_id = t.product_id',
+            //         [
+            //             'tag_id',
+            //             'position'
+            //         ]
+            //     )
+            //     ->where("t.tag_id = ?", $tag_id)
+            //     ->group(
+            //         'e.entity_id'
+            //     );
+            
             $this->_productCollection = $collection;
         }
         return $this->_productCollection;
     }
+
+    /**
+     * Get catalog layer model
+     *
+     * @return \Magento\Catalog\Model\Layer
+     */
+    public function getLayer()
+    {
+        return $this->_catalogLayer;
+    }
+
+    /**
+     * Retrieve loaded category collection
+     *
+     * @return AbstractCollection
+     */
+    public function getLoadedProductCollection()
+    {
+        return $this->_getProductCollection();
+    }
+
+    /**
+     * Retrieve current view mode
+     *
+     * @return string
+     */
+    public function getMode()
+    {
+        return $this->getChildBlock('toolbar')->getCurrentMode();
+    }
+
+    /**
+     * Need use as _prepareLayout - but problem in declaring collection from
+     * another block (was problem with search result)
+     * @return $this
+     */
+    protected function _beforeToHtml()
+    {
+
+        $toolbar = $this->getToolbarBlock();
+
+        // called prepare sortable parameters
+        $collection = $this->_getProductCollection();
+
+        // use sortable parameters
+        $orders = $this->getAvailableOrders();
+        //$orders["t.position"] = "t.position";
+        if ($orders) {
+            $toolbar->setAvailableOrders($orders);
+        }
+        $sort = $this->getSortBy();
+        if ($sort) {
+            $toolbar->setDefaultOrder($sort);
+        }
+        $dir = $this->getDefaultDirection();
+        if ($dir) {
+            $toolbar->setDefaultDirection($dir);
+        }
+        $modes = $this->getModes();
+        if ($modes) {
+            $toolbar->setModes($modes);
+        }
+
+        // set collection to toolbar and apply sort
+        $toolbar->setCollection($collection);
+
+        $this->setChild('toolbar', $toolbar);
+        $this->_eventManager->dispatch(
+            'catalog_block_product_list_collection',
+            ['collection' => $this->_getProductCollection()]
+        );
+
+        if ($configurable = $this->getLayout()->getBlock('category.product.type.details.renderers.configurable')) {
+            if (class_exists('\Magento\Swatches\ViewModel\Product\Renderer\Configurable')) {
+                if (!$configurable->hasData('configurable_view_model')) {
+                    $configurable->setData(
+                        'configurable_view_model',
+                        \Magento\Framework\App\ObjectManager::getInstance()->create(\Magento\Swatches\ViewModel\Product\Renderer\Configurable::class)
+                    );
+                }
+            }
+        }
+
+        $this->_getProductCollection()->load();
+
+        return parent::_beforeToHtml();
+    }
+
+    /**
+     * Retrieve Toolbar block
+     *
+     * @return \Magento\Catalog\Block\Product\ProductList\Toolbar
+     */
+    public function getToolbarBlock()
+    {
+        $blockName = $this->getToolbarBlockName();
+        if ($blockName) {
+            $block = $this->getLayout()->getBlock($blockName);
+            if ($block) {
+                return $block;
+            }
+        }
+        $block = $this->getLayout()->createBlock($this->_defaultToolbarBlock, uniqid(microtime()));
+        return $block;
+    }
+
+    /**
+     * Retrieve additional blocks html
+     *
+     * @return string
+     */
+    public function getAdditionalHtml()
+    {
+        return $this->getChildHtml('additional');
+    }
+
+    /**
+     * Retrieve list toolbar HTML
+     *
+     * @return string
+     */
+    public function getToolbarHtml()
+    {
+        return $this->getChildHtml('toolbar');
+    }
+
+    /**
+     * @param AbstractCollection $collection
+     * @return $this
+     */
+    public function setCollection($collection)
+    {
+        $this->_productCollection = $collection;
+        return $this;
+    }
+
+    /**
+     * @param array|string|integer|\Magento\Framework\App\Config\Element $code
+     * @return $this
+     */
+    public function addAttribute($code)
+    {
+        $this->_getProductCollection()->addAttributeToSelect($code);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceBlockTemplate()
+    {
+        return $this->_getData('price_block_template');
+    }
+
+    /**
+     * Retrieve Catalog Config object
+     *
+     * @return \Magento\Catalog\Model\Config
+     */
+    protected function _getConfig()
+    {
+        return $this->_catalogConfig;
+    }
+
+    /**
+     * Prepare Sort By fields from Category Data
+     *
+     * @param \Magento\Catalog\Model\Category $category
+     * @return \Magento\Catalog\Block\Product\ListProduct
+     */
+    public function prepareSortableFieldsByCategory($category)
+    {
+        if (!$this->getAvailableOrders()) {
+            $this->setAvailableOrders($category->getAvailableSortByOptions());
+        }
+        $availableOrders = $this->getAvailableOrders();
+        if (!$this->getSortBy()) {
+            $categorySortBy = $this->getDefaultSortBy() ?: $category->getDefaultSortBy();
+            if ($categorySortBy) {
+                if (!$availableOrders) {
+                    $availableOrders = $this->_getConfig()->getAttributeUsedForSortByArray();
+                }
+                if (isset($availableOrders[$categorySortBy])) {
+                    $this->setSortBy($categorySortBy);
+                }
+            }
+        }
+
+        return $this;
+    }
+
 }
