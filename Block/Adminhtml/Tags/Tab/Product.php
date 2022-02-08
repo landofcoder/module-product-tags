@@ -125,8 +125,10 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareCollection()
     {
+        $tag_id = (int)$this->getRequest()->getParam('tag_id', 0);
         if ($this->getTag() && $this->getTag()->getId()) {
             $this->setDefaultFilter(['in_tag' => 1]);
+            $tag_id = $this->getTag()->getId();
         }
         $collection = $this->_productFactory->create()->getCollection()->addAttributeToSelect(
             'name'
@@ -143,7 +145,7 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
             'lof_producttags_product',
             'position',
             'product_id=entity_id',
-            'tag_id=' . (int)$this->getRequest()->getParam('id', 0),
+            'tag_id=' . (int)$tag_id,
             'left'
         );
         $storeId = (int)$this->getRequest()->getParam('store', 0);
@@ -159,7 +161,6 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
             }
             $this->getCollection()->addFieldToFilter('entity_id', ['in' => $productIds]);
         }
-
         return parent::_prepareCollection();
     }
 

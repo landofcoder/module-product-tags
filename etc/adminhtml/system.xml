@@ -5,7 +5,7 @@
 			<label>Landofcoder.com</label>
 		</tab>
 		<section id="lofproductags" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
-			<label>Lof ProductTags</label>
+			<label>Product Tags</label>
 			<tab>landofcoder</tab>
 			<resource>Lof_ProductTags::config_lof_producttags</resource>
 			<group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
