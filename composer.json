@@ -12,7 +12,6 @@
             "role": "Magento 2 Extension Provider"
         }
     ],
-    "version": "1.0.1",
     "require": {
         "landofcoder/module-all" : "1.*"
       },
